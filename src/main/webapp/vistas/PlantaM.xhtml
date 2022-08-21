@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="../Plantilla.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <ui:define name="content">
+
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="Mensaje" listener="#{plantac.listar()}" type="preRenderView" />
+
+        <h:head>
+            <title>Plantas Mineras</title>
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+        <h:body>
+            <style>
+                body {background-color: dodgerblue;}
+            </style>
+            <p:growl id= "mensaje" showDetail="true" />
+            <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+
+            <div>
+                <center>
+                    <h:form id="Opciones">
+                        <h1 style="color: #000000;font-weight: bold" > Registro de Plantas Mineras</h1>
+                        <hr></hr>
+                        <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                            <p:commandButton icon="pi pi-user-plus" value="Registrar" oncomplete="PF('wdlgPlantas').show();"/>
+                        </p:panelGrid>
+                    </h:form>
+                </center>                    
+            </div>
+            <p:confirmDialog  global="true">
+                <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes"  update="dlgdatos" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+            </p:confirmDialog>
+            <h:form id="dlgPlantas" style="margin: auto">
+
+                <p:dialog style="margin: 150 auto" width="950" height="300" widgetVar="wdlgPlantas" id="dlgdatos" modal="true" 
+                          showEffect="clip" header=" Registro de Planta Minera" resizable="false" minimizable="true" maximizable="true">
+                    <p:ajax event="close" listener="${plantac.limpiar()}" update="dlgPlantas"/>
+
+                    <h:panelGrid columns="4">
+
+                        <p:fragment>
+
+                            <p:outputLabel value = "RUC"  style="color: #000000;font-weight: bold "/>   <p:outputLabel value="************" style="color: #ffffff" />
+
+                            <p:inputText value = "${plantac.plan.RUCPLAMIN}" required="true" id="txtRuc" requiredMessage="Ingrese el Ruc" maxlength="11" > 
+                                <p:keyFilter regEx="/[0-9,]/" />
+                                <f:validateLength minimum="11" maximum="11" />
+                                <p:ajax update="msgruc" delay="1500" event="keyup" />
+                                <p:tooltip for="txtRuc" value="Ingresa el RUC" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+
+                            <p:commandButton value="Buscar Por Ruc" action="#{plantac.buscarRuc()}"  update="msgruc txtPlanta txtDireccion txtUbigeo" icon="pi pi-search"/>
+
+                            <p:message id="msgruc" for="txtRuc"/>
+                        </p:fragment>
+                    </h:panelGrid>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value = "Planta Minera"  style="color: #000000;font-weight: bold "/>
+                        <p:inputText value = "${plantac.plan.NOMPLAMIN}" required="true" disabled="#{plantac.pase != false}" id="txtPlanta" requiredMessage="Ingrese la Planta Minera" maxlength="50" style="width: 200%" > 
+                            <p:keyFilter regEx="/[A-z,'.,',' ']/" />
+                            <f:validateLength  minimum="5" maximum="50" />
+                            <p:ajax update="msgplanta" delay="800" event="keyup" />
+                            <p:tooltip for="txtPlanta" value="Ingresa el Nombre de la Planta" position="right" showEffect="clip" hideEffect="fold"/>
+                        </p:inputText>
+
+                        <p:message id="msgplanta" for="txtPlanta"/>
+
+                        <p:outputLabel value = "Celular"  style="color: #000000;font-weight: bold "/>
+                        <p:inputText value ="${plantac.plan.CELPLAMIN}" id="txtCelular" maxlength="9" 
+                                     requiredMessage="Ingrese Nº de Celular" style="width: 135%" >
+                            <p:keyFilter regEx="/[0-9]/"/> 
+                            <f:validator validatorId="vFactura" />
+                            <p:ajax update="msgCelular" />
+                            <p:tooltip for="txtCelular" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>
+                        </p:inputText>
+                        <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+
+                        <p:outputLabel value = "Correo"  style="color: #000000;font-weight: bold "/>
+                        <p:inputText value ="${plantac.plan.CORPLAMIN}" id="txtCorreo" maxlength="50" 
+                                     requiredMessage="Ingrese correo electrónico" style="width: 135%" >
+                            <f:validator validatorId="vCorreo" />
+                            <!--<f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[\p{L}\p{M}\p{N}.-]*(\.[\p{L}\p{M}]{2,})$)?"/>--> 
+                            <p:ajax  update="msgCorreo" delay="800" event="keyup" />
+                            <!--                                <p:tooltip for="txtCorreo" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>-->
+                        </p:inputText>
+                        <p:message id="msgCorreo" for="txtCorreo"  showDetail="true" />
+
+                        <p:outputLabel value = "Distrito"  style="color: #000000;font-weight: bold "/>
+                        <p:autoComplete value="#{plantac.plan.CODUBI}" id="txtUbigeo" disabled="#{plantac.pase != false}" completeMethod="#{plantac.completeTextUbigeo}"
+                                        inputStyle="width: 200%;" minQueryLength="2" >
+                            <p:ajax update="msgUbigeo" delay="800" event="keyup"/>
+                            <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                        </p:autoComplete>
+
+                        <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+                        <p:outputLabel value = "Dirección"  style="color: #000000;font-weight: bold " />
+                        <p:inputText value ="${plantac.plan.DIRPLAMIN}" required="true" id="txtDireccion" requiredMessage="Ingrese la direccion" maxlength="100" disabled="#{plantac.pase != false}" style="width: 200%"> 
+                            <p:keyFilter regEx="/[A-z,'.,',' ',0-9]/" />
+                            <p:ajax update="msgDireccion" delay="800" event="keyup" />
+                            <p:tooltip for="txtDireccion" value="Ingresa la Direcciona" position="right" showEffect="clip" hideEffect="fold"/>
+                        </p:inputText>
+
+                        <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+
+                    </h:panelGrid>
+                    <p:commandButton   id="botguardar" action="${plantac.limpiar()}" disabled="false" icon="pi pi-save" value="Registrar" 
+                                       update="formplan:tablaPlan mensaje msgDireccion msgUbigeo msgplanta msgCorreo">
+                        <f:actionListener binding="#{plantac.registrar()}" />
+                        <p:confirm type="popup" header="Confirmación" message="Estás seguro de Guardar?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                    <p:confirmPopup global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />   
+                    </p:confirmPopup>
+                </p:dialog>
+            </h:form>
+
+            <div class="card" style="margin-left: 50px; margin-right: 50px">
+                <div style="float: right">
+                    <h:form id="Exportar" >
+                        <p:dialog id="report" widgetVar="wdlgreport" height="100" width="400" header="Reporte de Plantas Mineras" style="color: black;font-weight: bold">
+                            <div style="color: black; font-weight: bold">
+                                Deseas Ver o Descargar el Reporte:
+                            </div>
+
+                            <h:panelGrid>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <p:commandButton value="Ver" icon="fa fa-fw fa-download" ajax="false" action="${plantac.reportePlanta()}"
+                                                 onclick="this.form.target = '_blank'">
+                                </p:commandButton>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <b></b>
+                                <p:commandButton value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${plantac.descargarReporte()}" update="mensaje"
+                                                 onclick="this.form.target = '_blank'">
+                                </p:commandButton>
+
+                            </h:panelGrid>
+
+                        </p:dialog>
+                        <!--                        <p:commandButton styleClass="p-mr-2 p-mb-2" value="Reporte" oncomplete="PF('wdlgreport').show();" icon="pi pi-file-pdf"/>
+                                                <p:commandButton value="Excel" icon="pi pi-file-excel" styleClass="p-mr-2 p-mb-2">
+                                                    <p:dataExporter type="xls" target="formplan:tablaPlan" fileName="PlantaMinera_XLS" options="#{plantac.excelOpt}"/>
+                                                </p:commandButton>-->
+                    </h:form>
+                </div>
+
+                <div style="float: right">
+                    <h:form >
+                        <p:panelGrid columns="1" layout="grid">
+                            <p:outputLabel value="Reporte por:" style="color: black; font-weight: bold;text-align: right" />
+                            <h:panelGrid columns="3">
+                                <p:commandButton value="Ver" icon="fa fa-fw fa-eye" ajax="false" action="${plantac.reportePlanta()}"
+                                                 onclick="this.form.target = '_blank'">
+                                </p:commandButton>
+                                <p:commandButton value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${plantac.descargarReporte()}" update="mensaje"
+                                                 onclick="this.form.target = '_blank'">
+                                </p:commandButton>
+                                <p:commandButton value="Excel" icon="pi pi-file-excel" styleClass="p-mr-2 p-mb-2">
+                                    <p:dataExporter type="xls" target="formplan:tablaPlan" fileName="PlantaMinera_XLS" options="#{plantac.excelOpt}"/>
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </p:panelGrid>
+                    </h:form>
+                </div>
+
+                <h:form id="formplan">
+
+                    <div>
+                        <h:panelGrid columns="3">
+
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel value="Filtro Por:" style="color: black; font-weight: bold" />
+                                <h:panelGrid columns="3">
+                                    <p:selectOneMenu value="#{plantac.tipo}" style="align">
+                                        <f:selectItem itemValue="1" itemLabel="Activos" /> 
+                                        <f:selectItem itemValue="2" itemLabel="Inactivos"  />
+                                        <f:selectItem itemValue="3" itemLabel="Todos" />
+                                        <p:ajax listener="${plantac.listar()}" update="tablaPlan context" />
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+                            </p:panelGrid>
+                        </h:panelGrid>
+                    </div>
+
+                    <p:dataTable id="tablaPlan" var="tblPlan" value="#{plantac.listadoPlan}" widgetVar="filtro"
+                                 paginator="true" filteredValue="#{plantac.listadoPlan}" 
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}" 
+                                 rows="5" selectionMode="single" selection="#{plantac.plan}" rowKey="#{tblPlan.RUCPLAMIN}" 
+                                 emptyMessage="No se encontraron datos con los criterios dados" 
+                                 globalFilterFunction="#{plantac.globalFilterFunction}">
+
+                        <!--                        <p:ajax event="rowSelect" update="form:context" />-->
+                        <f:facet name="header">
+                            <h3 style="color: black; font-weight: bold;text-align: center">LISTADO DE PLANTAS MINERAS</h3>
+                            <div class="p-d-flex p-jc-end">
+                                <p:inputText id="globalFilter" onkeyup="PF('filtro').filter()" style="width:300px"
+                                             placeholder="Buscar en todas la filas" />
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="Item" rendered="false">
+                            <h:outputText value="#{tblPlan.IDPLAMIN}"/>
+                        </p:column>
+
+                        <p:column headerText="Nº RUC" filterable="false" filterMaxLength="11" width="100" >
+                            <p:keyFilter mask="int" regEx="/[0-9]/" />
+                            <h:outputText value="#{tblPlan.RUCPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Planta Minera" filterable="false" filterMaxLength="50" >
+                            <h:outputText value="#{tblPlan.NOMPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Celular"  width="90" >
+                            <h:outputText value="#{tblPlan.CELPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Correo Electrónico" width="200" >
+                            <h:outputText value="#{tblPlan.CORPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Distrito, Provincia, Departamento" filterable="false">
+                            <h:outputText value="#{tblPlan.CODUBI}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Dirección" filterable="false">
+                            <h:outputText value="#{tblPlan.DIRPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+
+                        <p:column headerText="Estado" filterable="false" rendered="false" exportable="false">
+                            <h:outputText value="#{tblPlan.ESTPLAMIN}" style="color:#{plantac.estadoColor(tblPlan)};"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <p:contextMenu for="tablaPlan" id="context">
+                        <p:menuitem>
+                            <p:commandButton value="Modificar" oncomplete="PF('wdlgPlantaM').show();" 
+                                             update=":dlgPlantaM" />
+                        </p:menuitem>
+
+                        <p:menuitem id="bEliminar" rendered="#{plantac.plan.ESTPLAMIN == 'A' || plantac.tipo == 1 }">
+                            <p:commandButton value="Eliminar" icon="ui_icon_trash" actionListener="#{plantac.eliminar(plantac.plan)}" update= "tablaPlan mensaje" >
+                                <p:confirm type="popup" header="Confirmación" message="¿Deseas eliminar?" icon="ui_icon_trash"/>
+                            </p:commandButton>
+                            <p:confirmPopup global="true">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                            </p:confirmPopup> 
+                        </p:menuitem>
+
+                        <p:menuitem id="bRestaurar" rendered="#{plantac.plan.ESTPLAMIN == 'I' || plantac.tipo == 2 }">
+                            <p:commandButton value="Restaurar" icon="ui_icon_trash" actionListener="#{plantac.restaurar(plantac.plan)}" update= "tablaPlan mensaje" >
+                                <p:confirm type="popup" header="Confirmación" message="¿Deseas Restaurar?" icon="ui_icon_trash"/>
+                            </p:commandButton>
+                            <p:confirmPopup global="true">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                            </p:confirmPopup> 
+                        </p:menuitem>
+                    </p:contextMenu>
+                </h:form>
+                <!--                               Formulario de Modificar-->
+                <h:form id="dlgPlantaM">
+                    <p:dialog width="950" height="300"  widgetVar="wdlgPlantaM" id="dlgdatosP" modal="true" showEffect="clip" header="Actualizacion de la Planta Minera" resizable="false">
+                        <p:ajax event="close"  update="dlgPlantaM"/>
+                        <p:outputLabel value = "#{plantac.plan.IDPLAMIN}" rendered="false"/>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value = "RUC" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value = "${plantac.plan.RUCPLAMIN}" required="true" id="txtRuc" requiredMessage="Ingrese el Ruc" maxlength="11" >
+                                <p:keyFilter regEx="/[0-9,]/" />
+                                <f:validateLength minimum="11" maximum="70" />
+                                <p:ajax update="msgruc" />
+                                <p:tooltip for="txtRuc" value="Ingresa el RUC" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgruc" for="txtRuc"/>
+                            <p:outputLabel value = "Planta Minera" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value = "${plantac.plan.NOMPLAMIN}" required="true" id="txtPlanta" requiredMessage="Ingrese la Planta Minera" maxlength="50" style="width: 200%" >
+                                <p:keyFilter regEx="/[A-z,'.,' ']/" />
+                                <f:validateLength  minimum="5" maximum="50" />
+                                <p:ajax update="msgplanta" />
+                                <p:tooltip for="txtPlanta" value="Ingresa el Nombre de la Planta" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgplanta" for="txtPlanta"/>
+                            <p:outputLabel value = "Celular" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value ="${plantac.plan.CELPLAMIN}" id="txtCelular" maxlength="9" 
+                                         requiredMessage="Ingrese Nº de Celular" style="width: 135%" >
+                                <p:keyFilter regEx="/[0-9]/"/> 
+                                <f:validator validatorId="vFactura" />
+                                <p:ajax update="msgCelular" />
+                                <p:tooltip for="txtCelular" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+                            <p:outputLabel value = "Correo" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value ="${plantac.plan.CORPLAMIN}" id="txtCorreo" maxlength="50" 
+                                         requiredMessage="Ingrese correo electrónico" style="width: 135%" >
+                                <f:validator validatorId="vCorreo" />
+                                <p:ajax  update="msgCorreo" delay="800" event="keyup" />
+                                <!--                                <p:tooltip for="txtCorreo" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>-->
+                            </p:inputText>
+                            <p:message id="msgCorreo" for="txtCorreo"  showDetail="true" />
+
+                            <p:outputLabel value = "Distrito" style="color: #000000;font-weight: bold "/>
+                            <p:autoComplete value="#{plantac.plan.CODUBI}" id="txtUbigeo" completeMethod="#{plantac.completeTextUbigeo}"
+                                            inputStyle="width: 135%;" minQueryLength="2" >
+                                <p:keyFilter regEx="/[A-z,'.,',' ']/" />
+                                <p:ajax update="msgUbigeo"/>
+                                <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+                            <p:outputLabel value = "Dirección" style="color: #000000;font-weight: bold " />
+                            <p:inputText value ="${plantac.plan.DIRPLAMIN}" required="true" id="txtDireccion" requiredMessage="Ingrese la direccion" maxlength="100" style="width: 200%">
+                                <p:keyFilter regEx="/[A-z,'.,',' ',0-9]/" />
+                                <p:ajax update="msgDireccion" />
+                                <p:tooltip for="txtDireccion" value="Ingresa la Direcciona" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+                        </h:panelGrid>
+                        <p:commandButton value="Modificar"  actionListener="${plantac.modificar()}" update="formplan:tablaPlan mensaje" >
+                            <p:confirm type="popup" header="Confirmación" message="Estás seguro de Modificar?" icon="pi pi-exclamation-triangle"/>
+                        </p:commandButton>
+                        <p:confirmPopup global="true">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />   
+                        </p:confirmPopup>  
+                    </p:dialog>
+                </h:form>
+            </div>
+        </h:body>
+    </ui:define>
+
+</ui:composition>

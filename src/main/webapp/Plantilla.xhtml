@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//ES" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/theme.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/fa/font-awesome.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/components.css" />
+        <script type="text/javascript" src="#{request.contextPath}/faces/resources/core.js"></script>
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/css/primeflex.min.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/css/primeicons.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/css/demo-light.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/faces/resources/css/layout-light.css" />
+        <title>Pesflet</title>
+        <script type="text/javascript" src="#{request.contextPath}/faces/resources/js/layout.js"></script>
+    </h:head>
+
+    <h:body class="main-body  ">
+
+        <div class="layout-wrapper layout-topbar-light layout-static-active layout-menu-dim  layout-static layout-static-active ">
+
+
+
+            <div class="layout-topbar">
+
+
+
+                <div class="layout-topbar-wrapper">
+
+
+                    <div class="main-body" >
+                        <!--                        <h2 style="align-content: center;margin: 0" >
+                                                    Inventario de Guias
+                                                    </h2>-->
+                        <img src="../resources/images/PesfletLogo.svg" width="140px" height="140px" />
+                        <!--<p:graphicImage name="resources/images/PesfletLogo.svg"/>-->
+
+                    </div>
+
+
+
+
+                    <div class="layout-topbar-right">
+                        <a href="#" class="menu-button">
+                            <i class="pi pi-bars"></i>
+                        </a>
+
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <a href="#" >
+                        </a>
+                        <!--<h:form  >-->
+                        <p:fragment  >
+                            <div >
+                                <h:outputText style="color: black;font-weight: bold" value="Tiempo Restante :"/>
+                                <h:outputText id="contador" style="font-weight: bold;color:#{usuarioC.estadoColor(usuarioC.numero)};"  value=" #{usuarioC.numero}"/>
+                            </div>
+                            <p:poll id="poll" interval="1"  process="contador" listener="#{usuarioC.decrementoNumero}" update="contador" /> 
+                            <div >
+                                <h:outputLabel style="color: black;font-weight: bold" value="Usuario: #{usuarioC.nombre}"/>
+                            </div>
+
+                        </p:fragment>
+                        <!--</h:form>-->
+
+                        <a href="#" class="layout-rightpanel-button">
+                            <i class="pi pi-arrow-left"></i>
+                        </a>
+
+                    </div>
+                </div>
+                <p:idleMonitor timeout="1" >
+                    <p:ajax event="active" listener="#{usuarioC.activarSesion}"/>
+                </p:idleMonitor>
+            </div>
+            <p:panel  rendered="#{usuarioC.pase == '2'}"  > 
+                <div class="menu-wrapper" >
+
+                    <div class="layout-menu-container">
+
+                        <form id="menuform" name="menuform" method="post"
+
+                              enctype="application/x-www-form-urlencoded">
+
+                            <input type="hidden" name="menuform" value="menuform" />
+                            <ul id="menuform:j_idt37" class="layout-menu">
+                                <li id="menuform:om_components" role="menuitem" class="layout-root-menuitem">
+                                    <div><span class="layout-menuitem-text">Menú</span></div><a href="#"><i
+                                            class="pi pi-home layout-menuitem-icon"></i><span
+                                            class="layout-menuitem-text">Menú</span><i
+                                            class="fa fa-fw layout-submenu-toggler fa-angle-down"></i></a>
+                                    <div class="layout-menu-tooltip">
+                                        <div class="layout-menu-tooltip-arrow"></div>
+                                        <div class="layout-menu-tooltip-text">Menú</div>
+                                    </div>
+
+
+                                    <ul role="menu">
+                                        <li role="menubar" style="color: white" /> 
+                                        <div class="layout-menu-tooltip">
+                                            <div class="layout-menu-tooltip-arrow"></div>
+                                            <div class="layout-menu-tooltip-text">Mantenimiento</div>
+                                        </div>
+                                        <span class="layout-menuitem-text" style="color: white"></span>
+
+                                        <li  id="menuform:om_menu" role="menuitem"><a href="#{request.contextPath}/faces/vistas/dashboard.xhtml">
+                                                <i   
+                                                    class="pi pi-home left_content"></i>
+                                                <span
+                                                    class="layout-menuitem-text">Dashboard</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Dashboard</div>
+                                            </div>
+                                        </li>     
+
+                                        <li id="menuform:om_menu" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Usuario_Lista.xhtml">
+                                                <i   
+                                                    class="pi pi-users left_content"></i>
+                                                <span
+                                                    class="layout-menuitem-text">Usuario</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Usuario</div>
+                                            </div>
+                                        </li>
+
+                                        <li id="menuform:om_menu" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Mensaje.xhtml"><i   
+                                                    class="pi pi-users left_content"></i>
+                                                <span
+                                                    class="layout-menuitem-text">Mensaje</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Mensaje</div>
+                                            </div>
+                                        </li>
+
+
+                                        <span class="layout-menuitem-text" style="color: white">Mantenimiento</span>
+                                        <li id="menuform:om_facturador" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Facturador.xhtml"><i
+                                                    class="pi pi-sitemap layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Facturador</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Facturador</div>
+                                            </div>
+                                        </li>
+                                        <li id="menuform:om_plantaminera" role="menuitem"><a href="#{request.contextPath}/faces/vistas/PlantaM.xhtml"><i
+                                                    class="pi pi-th-large layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Planta Minera</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Planta Minera</div>
+                                            </div>
+                                        </li>
+                                        <li id="menuform:om_mineral" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Mineral.xhtml"><i
+                                                    class="pi pi-th-large layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Mineral</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Mineral</div>
+                                            </div>
+                                        </li>
+                                        <li class="Separator"></li>
+                                        <span class="layout-menuitem-text" style="color: white">Registro</span>
+                                        <li id="menuform:om_viajes" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Viaje.xhtml"><i
+                                                    class="pi pi-directions layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Viaje</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Viaje</div>
+                                            </div>
+                                        </li>
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Control_Guia.xhtml">
+                                                <i
+                                                    class="pi pi-book layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Guía</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Guía</div>
+                                            </div>
+                                        </li>
+                                        <li class="Separator"></li>
+                                        <span class="layout-menuitem-text" style="color: white">Consulta</span>
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Consulta_Viaje.xhtml">
+                                                <i
+                                                    class="pi pi-map layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Consulta de Viaje</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Consulta de Viaje</div>
+                                            </div>
+                                        </li>
+
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Consultas.xhtml">
+                                                <i
+                                                    class="pi pi-desktop layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Consulta de Guias</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Consulta de Guias</div>
+                                            </div>
+                                        </li>
+
+                                        <li class="Separator"></li>
+                                        <span class="layout-menuitem-text" style="color: white">Configuracion</span>
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Cambiar_Contrasena.xhtml">
+                                                <i
+                                                    class="pi pi-spin pi-cog"></i><span
+                                                    class="layout-menuitem-text">Cambiar Contraseña</span></a>
+
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Cambiar Contraseña</div>
+                                            </div>
+                                        </li>
+                                        <li id="menuform:om_guuias" role="menuitem" ><a onclick="PF('salida').show();">
+                                                <i
+                                                    class="pi pi-sign-out layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">salir</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">salir</div>
+                                            </div>
+                                        </li>
+
+                                    </ul>
+                                </li>
+                            </ul>
+                            <script id="menuform:j_idt37_s"
+                            type="text/javascript">PrimeFaces.cw("Poseidon", "PoseidonMenuWidget", {id: "menuform:j_idt37", pathname: "/poseidon/empty.xhtml"});</script>
+
+                        </form>
+                    </div>           
+                </div>
+            </p:panel>
+
+            <p:panel  rendered="#{usuarioC.pase == '1'}"  > 
+                <div class="menu-wrapper" >
+
+                    <div class="layout-menu-container">
+
+                        <form id="menuform" name="menuform" method="post"
+
+                              enctype="application/x-www-form-urlencoded">
+
+                            <input type="hidden" name="menuform" value="menuform" />
+                            <ul id="menuform:j_idt37" class="layout-menu">
+                                <li id="menuform:om_components" role="menuitem" class="layout-root-menuitem">
+                                    <div><span class="layout-menuitem-text">Menú</span></div><a href="#"><i
+                                            class="pi pi-home layout-menuitem-icon"></i><span
+                                            class="layout-menuitem-text">Menú</span><i
+                                            class="fa fa-fw layout-submenu-toggler fa-angle-down"></i></a>
+                                    <div class="layout-menu-tooltip">
+                                        <div class="layout-menu-tooltip-arrow"></div>
+                                        <div class="layout-menu-tooltip-text">Menú</div>
+                                    </div>
+
+
+                                    <ul role="menu">
+                                        <li role="menubar" style="color: white" /> 
+                                        <div class="layout-menu-tooltip">
+                                            <div class="layout-menu-tooltip-arrow"></div>
+                                            <div class="layout-menu-tooltip-text">Mantenimiento</div>
+                                        </div>
+                                        <span class="layout-menuitem-text" style="color: white"></span>
+
+                                        <li id="menuform:om_menu" role="menuitem"><a href="#{request.contextPath}/faces/vistas/dashboard.xhtml">
+                                                <i   
+                                                    class="pi pi-home left_content"></i>
+                                                <span
+                                                    class="layout-menuitem-text">Dashboard</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Dashboard</div>
+                                            </div>
+                                        </li>     
+                                        <li class="Separator"></li>
+                                        <span class="layout-menuitem-text" style="color: white">Maestro</span>
+                                        <li id="menuform:om_mineral" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Mineral.xhtml"><i
+                                                    class="pi pi-th-large layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Mineral</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Mineral</div>
+                                            </div>
+                                        </li>
+                                        <li class="Separator"></li>
+                                        <span class="layout-menuitem-text" style="color: white">Registro</span>
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Control_Guia.xhtml">
+                                                <i
+                                                    class="pi pi-book layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">Guía</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Guía</div>
+                                            </div>
+                                        </li>
+
+                                        <span class="layout-menuitem-text" style="color: white">Configuracion</span>
+                                        <li id="menuform:om_guuias" role="menuitem"><a href="#{request.contextPath}/faces/vistas/Cambiar_Contrasena.xhtml">
+                                                <i
+                                                    class="pi pi-spin pi-cog"></i><span
+                                                    class="layout-menuitem-text">Cambiar Contraseña</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">Cambiar Contraseña</div>
+                                            </div>
+                                        </li>
+                                        <li id="menuform:om_guuias" role="menuitem" ><a onclick="PF('salida').show();">
+                                                <i
+                                                    class="pi pi-sign-out layout-menuitem-icon"></i><span
+                                                    class="layout-menuitem-text">salir</span></a>
+                                            <div class="layout-menu-tooltip">
+                                                <div class="layout-menu-tooltip-arrow"></div>
+                                                <div class="layout-menu-tooltip-text">salir</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <script id="menuform:j_idt37_s"
+                            type="text/javascript">PrimeFaces.cw("Poseidon", "PoseidonMenuWidget", {id: "menuform:j_idt37", pathname: "/poseidon/empty.xhtml"});</script>
+
+                        </form>
+                    </div>           
+                </div>
+            </p:panel>
+            <p:dialog widgetVar="salida" id="salir" header="Cerrar Sesión" >
+                <h:panelGrid columns="2">
+                    <p:commandButton value="Salir" action="#{usuarioC.cerrarSesion()}" />
+                    <p:commandButton value="Cancelar" style="background-color: #c92c2c" oncomplete="PF('salida').hide()"/>
+                </h:panelGrid>
+            </p:dialog>
+            <div class="layout-rightpanel"> 
+                <div class="right_content" style="color: #000 " >
+                    <li id="menuform:E_Correo" role="menuitem"><a href="#{request.contextPath}/faces/vistas/ECorreo.xhtml">
+                            <i
+                                class="pi pi-envelope layout-menuitem-icon"></i><span
+                                class="layout-menu"> Correo</span></a>
+                        <!--                        <div class="layout-menu-tooltip">
+                                                    <div class="layout-menu-tooltip-arrow"></div>
+                                                    <div class="layout-menu-tooltip-text">Correo</div>
+                                                </div>-->
+                    </li>
+                </div>
+            </div>
+
+            <div class="layout-main">
+
+                <div class="layout-breadcrumb">
+                    <div class="breadcrumb">
+                        <div class="route-bar-breadcrumb">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-content">
+                    <div class="p-grid">
+                        <div class="card">
+                            <ui:insert name="content">
+
+
+
+                            </ui:insert>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="layout-footer">
+                    <div class="social-icons">
+
+                    </div>
+                </div>
+            </div>
+            <div class="layout-mask modal-in"></div>
+        </div>
+    </h:body>
+
+
+</html>

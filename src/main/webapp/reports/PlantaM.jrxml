@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Facturador" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="701" leftMargin="70" rightMargin="70" topMargin="70" bottomMargin="50" uuid="e115bc59-fd0f-446b-a585-04725e27d7f0">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Table_TH" mode="Opaque" backcolor="rgba(255, 255, 255, 0.0)">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="rgba(255, 255, 255, 0.0)">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset_table" uuid="4b715c27-d95a-4265-820e-2d77dcd236be">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT * FROM VPLANTAMINERA]]>
+		</queryString>
+		<field name="RUCPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RUCPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="RUCPLAMIN"/>
+		</field>
+		<field name="NOMPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+		</field>
+		<field name="CORPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CORPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="CORPLAMIN"/>
+		</field>
+		<field name="DIRPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DIRPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="DIRPLAMIN"/>
+		</field>
+		<field name="DISPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DISPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="DISPLAMIN"/>
+		</field>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT * FROM VPLANTAMINERA]]>
+	</queryString>
+	<field name="RUCPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RUCPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="RUCPLAMIN"/>
+	</field>
+	<field name="NOMPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+	</field>
+	<field name="CORPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CORPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="CORPLAMIN"/>
+	</field>
+	<field name="DIRPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DIRPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="DIRPLAMIN"/>
+	</field>
+	<field name="DISPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DISPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="DISPLAMIN"/>
+	</field>
+	<title>
+		<band height="178" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement x="0" y="74" width="701" height="1" uuid="c59cdac9-a743-4fb7-9178-482aa67c5a05">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="567" y="50" width="50" height="20" uuid="81c9f7b3-0efb-4376-b7de-0a7d2cb8823d"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd MMM yyyy">
+				<reportElement x="617" y="50" width="84" height="20" uuid="6e5a7a30-cfca-4403-a550-d144773caadf"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="95" y="0" width="275" height="25" uuid="a3a62899-ab63-48ab-aad9-fbdfcfd07a2d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tranporte Hermanos Yllanes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="55" width="205" height="15" uuid="0a1f28d9-9ef3-4a0d-9f78-7d1a106348e5"/>
+				<text><![CDATA[939056505, hmnosyllanes@gmail.com
+correo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="25" width="215" height="15" uuid="05a17f4a-0a5e-41a8-8d34-e494fb9be3ca"/>
+				<text><![CDATA[Huaynacapac Nº18]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="40" width="205" height="15" uuid="dc3c6ae1-7c9a-4292-b33c-06c95fe12aee"/>
+				<text><![CDATA[Vista Alegre, Nazca, Ica]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="15" width="85" height="45" uuid="2fecad0c-24bc-48b5-b70e-c830e3b45949"/>
+				<imageExpression><![CDATA["C:/Users/Usuario/Documents/NetBeansProjects/PESFLET_Maven/src/main/webapp/resources/images/logoPesflet.png"]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement mode="Opaque" x="0" y="118" width="701" height="60" uuid="471a2977-60b5-41f1-a5f0-a5929b3a12d5">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset_table" uuid="64a80028-0e3f-455a-9839-7851df294a12">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="70" uuid="99bff751-28c6-450c-a8d4-8285953f9c1a">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="30" forecolor="#030303" backcolor="rgba(255, 255, 255, 0.0)" uuid="7df2acb4-900b-42dd-b1e3-cb69b6248b86"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[RUC]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="70" height="30" uuid="09625da9-4cd5-4c9a-be9c-6ed814e10b34"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{RUCPLAMIN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="150" uuid="d30a4460-f815-428a-97a5-854652b9246c">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="150" height="30" forecolor="#030303" backcolor="rgba(255, 255, 255, 0.0)" uuid="c3776061-237b-4c2d-bcc2-18f29d9a81ad"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[PLANTA MINERA]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="150" height="30" uuid="06ced6f9-7e2b-4b0f-94f9-ebfe3422d43c"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{NOMPLAMIN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="b1d54b00-feca-4414-9d72-0d4e7089c92d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="30" forecolor="#030303" backcolor="rgba(255, 255, 255, 0.0)" uuid="9332ca7c-bb9a-458f-8f37-db7b7d40023f"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CORREO ELECTRONICO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="140" height="30" uuid="2bc6b66b-f3f6-42c8-9e03-f360cef208a8"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CORPLAMIN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="8cc09472-5c03-4df1-bada-15f75705b0fc">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="140" height="30" forecolor="#030303" backcolor="rgba(255, 255, 255, 0.0)" uuid="98432508-da5d-4394-93e1-f18e19527662"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DISTRITO, PROVINCIA, DEPARTAMENTO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="140" height="30" uuid="4a6a2086-0112-4651-b714-2c0efd80e503"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DISPLAMIN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="201" uuid="e3a12f38-c20e-4fc0-9e02-36d3e068ed10">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+						<jr:columnHeader style="Table_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="201" height="30" forecolor="#030303" backcolor="rgba(255, 255, 255, 0.0)" uuid="1c2abaf7-505a-4407-af3d-adcd22cd4c76"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DIRECCIÓN]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement x="0" y="0" width="201" height="30" uuid="4a413a45-e0eb-4438-bfc3-62b90d2e865d"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DIRPLAMIN}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="80" width="701" height="24" uuid="40ce1682-953b-4481-913c-1d8f6ba22ff8">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE PLANTAS MINERAS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="110" width="701" height="1" uuid="1fddd578-6e1c-422a-bb7b-7ac4471802bb">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="662" y="0" width="29" height="20" uuid="56f59110-b800-4f94-8315-0c95a1d9ecee"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Pag. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="691" y="0" width="10" height="20" uuid="883897c4-be2d-408d-9d3f-f9869b718f71">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

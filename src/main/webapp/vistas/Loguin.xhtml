@@ -1,0 +1,642 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      class="no-js" lang="en">
+
+    <h:head>     
+        <h:outputStylesheet library="css" name="validacion.css" />
+        <link href="../resources/css/demo-light.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+        <!--<link rel="stylesheet" href="../css/style.css"/>-->
+        <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/css/style.css" rel="stylesheet" type="text/css"/>
+
+
+        <link href="../resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/fonts/Linearicons-Free-v1.0.0/icon-font.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/vendor/animate/animate.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/vendor/animsition/css/animsition.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/vendor/select2/select2.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/vendor/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
+        <link href="../resources/css/util.css" rel="stylesheet" type="text/css"/>
+
+        <link rel="stylesheet" href="../assets/css/slick/slick.css"/>
+        <link rel="stylesheet" href="../assets/css/slick/slick-theme.css"/>
+        <link rel="stylesheet" href="../assets/css/animate.css"/>
+        <link rel="stylesheet" href="../assets/css/iconfont.css"/>
+        <link rel="stylesheet" href="../assets/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="../assets/css/bootstrap.css"/>
+        <link rel="stylesheet" href="../assets/css/magnific-popup.css"/>
+        <link rel="stylesheet" href="../assets/css/bootsnav.css"/>
+        <link rel="stylesheet" href="../assets/css/style.css"/>
+        <link rel="stylesheet" href="../assets/css/responsive.css"/>
+        <link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/css/flexslider.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../assets/css/plugins.css" rel="stylesheet" type="text/css"/>
+
+    </h:head>
+
+    <event listener="#{usuarioC.limpiar()}" type="preRenderView" />
+    <f:event listener="#{usuarioC.seguridadLogin()}" type="preRenderView" />
+    <event listener="#{usuarioC.rellenarCuerpo()}" type="preRenderView" />
+    <p:growl id= "msj" showDetail="true"  />
+    <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+    <h:body >
+        <h:form id="loguin" class="padre" style="background-image: url(../resources/images/fondoLoguin.jpg);height: 100vh;"  >  
+            <center >
+                <div class="hijo"  >
+                    <p:panel  class="row justify-content-center"  >
+                        <img src="../resources/images/PesfletLogo.svg" width="200px" height="80px"/>
+                        <center><h2 class="mb-4 text-center" style="color: #000000;" >Inicio de Sesión</h2></center>
+
+                        <form   >
+                            <div class="form-group" >
+                                <p:inputText placeholder="Usuario"  style="font-size:17px;color: black;width: 223px" id="nom" value="#{usuarioC.usu.NOMUSU}"  required="true" requiredMessage="Complete la casilla" />
+                            </div>
+                            <p:message for="nom" showDetail="true" id="msgUsuario" style="color: #f16383;font-size:17px"  />
+                            <div class="form-group">
+                                <p:password  placeholder="Contraseña"   style="font-size:17px" id="con1" value="#{usuarioC.usu.CONUSU}" required="true"  toggleMask="true" redisplay="true" requiredMessage="Complete la casilla">
+                                </p:password >
+                            </div>
+                            <p:message id="msgContra" for="con1"  showDetail="true" style="color: #f16383;font-size:17px"  />
+                            <p:panel id="formcaptcha" >
+                                <p:captcha id="captcha" label="Captcha" tabindex="3" theme="clean" language="es" required="true" rendered="#{usuarioC.captcha == true}"
+                                           requiredMessage="Complete el Captcha"  expired="Captcha expirado" 
+                                           validatorMessage="El valor de la imagen incorrecto" >
+                                </p:captcha>
+                            </p:panel>
+                            <p:message id="msgCaptcha" for="captcha"  showDetail="true" style="color: #f16383;font-size:17px"  />
+                            <div class="form-group">
+                                <div class="text-center">
+                                    <p:commandButton  style="background-color: #007bff;font-size:20px" id="ingresar" icon="pi pi-sign-in" value="Ingresar"  actionListener="#{usuarioC.ingresoUsuario()}"   update="msj msgContra msgUsuario msgCaptcha" >
+                                        <p:ajax   listener="#{usuarioC.conteoTiempo()}" delay="10"  event="click" update="formcaptcha" />    
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="social d-flex text-center">
+                                    <a onclick="PF('dlgAyuda').show();"  href="#" class="px-2 py-2 mr-md-1 rounded"><span></span> Ayuda</a>
+                                    <a href="#" class="px-2 py-2 mr-md-1 rounded"><span></span></a>
+                                    <a  href="../vistas/Recuperar.xhtml"  class="px-2 py-2 ml-md-1 rounded"><span></span> Olvidaste tu contraseña?</a>
+                                </div>
+                            </div>
+                        </form>
+                    </p:panel>
+
+                    <p:fragment>
+                        <p:blockUI block="loguin" widgetVar="bui">
+                            <h:panelGrid columns="1" id="block"  >
+                                <center>
+                                    <h>
+                                        <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+                                    </h>
+                                </center>
+                                <p:outputLabel value="Sistema Bloqueado" style="color: white;font-weight: bold"/>
+                                <p:outputLabel value="Espere un momento" style="color: white;font-weight: bold"/>
+<!--                                    <p:outputLabel id="conteo" value="#{usuarioC.segundo}" style="color: white;font-weight: bold">
+                                </p:outputLabel>-->
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </p:fragment>
+                </div>
+            </center>
+        </h:form>
+        <p:dialog widgetVar="dlgAyuda" id="dlgDatos" resizable="false" style="margin:0 auto"
+                  position="center">
+            <h:form class="padre">  
+                <form>
+                    <center>
+                        <!--<h4 style="color: #000000;font-weight: bold"> Saludos </h4>-->
+                        <h4 style="color: #000000;font-weight: bold"> Envienos cualquier consulta que tenga </h4>
+                    </center>
+                    <p:outputLabel  value="Asunto:" style="color: #000000;font-weight: bold;font-size:14px"/>
+                    <p:inputText id="datos" label="Asunto" value="#{usuarioC.asunto}" required="true"  requiredMessage="Se necesita un valor" />
+                    <p:message  for="datos" showDetail="true" id="msgNombre" style="color: #f16383;font-size:17px"   />
+                    <h:panelGrid>
+                        <p:outputLabel value="Cuerpo:" style="color: #000000;font-weight: bold;font-size:14px"/>
+                        <p:textEditor id="texto" style="color: #000000"  widgetVar="editor1" value="#{usuarioC.cuerpo}" height="100"  secure="false" required="true" requiredMessage="Se necesita un valor"  />
+                        <p:message for="texto" showDetail="true" id="msgTxt" style="color: #f16383;font-size:17px"  />
+
+                    </h:panelGrid>
+
+                    <p:panelGrid columns="2" style="table-layout:fixed; text-align: center">
+                        <p:commandButton  value="Enviar Correo" action="#{usuarioC.enviarCorreoAyuda()}" update="msj msgNombre msgTxt" />
+                        <p:fragment>
+                            <p:commandButton value="Cancelar" oncomplete="PF('dlgAyuda').hide()" style="background-color: #c92c2c"/>
+                        </p:fragment>
+                    </p:panelGrid>
+                </form>
+            </h:form>
+        </p:dialog>
+
+
+        <div id="home" class="home bg-black fix">
+            <div class="overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="main_home text-center">
+                        <div class="col-md-12">
+                            <div class="hello_slid">
+                                <div class="slid_item">
+                                    <div class="home_text ">
+                                        <h2 class="text-white">Bienvenido a <strong>PESFLET</strong></h2>
+                                        <h1 class="text-white">Inventario de Guías</h1>
+                                        <h3 class="text-white">- Para empresas <strong>logísticas</strong> de minerales
+                                            -</h3>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="business" class="business bg-grey roomy-70">
+            <div class="container">
+                <div class="row">
+                    <div class="main_business">
+                        <div class="col-md-6">
+                            <div class="business_slid">
+                                <div class="business_items text-center">
+                                    <div class="business_item">
+                                        <div class="business_img">
+                                            <img src="../assets/images/camion3.jpg" alt="" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="business_item sm-m-top-50">
+                                <h2 class="text-uppercase"><strong>PESFLET</strong> y lo que le hace especial</h2>
+                                <ul>
+                                    <li><i class="fa fa-arrow-circle-right"></i> Seguridad total cuando ingreses la
+                                        información de las guías. </li>
+                                    <li><i class="fa  fa-arrow-circle-right"></i> Monitoreo del servicio, desde el
+                                        comienzo hasta el final.</li>
+                                    <li><i class="fa  fa-arrow-circle-right"></i> Manejo simple del Sistema</li>
+                                    <li><i class="fa  fa-arrow-circle-right"></i> De manera automatica se hace un
+                                        inventario
+                                        de Viaje y Guías que hayas registrado, tu solo tienes que registrar información.
+                                    </li>
+
+
+
+                                </ul>
+                                <p class="m-top-20">Pesflet fue inspirado para aquellas empresas de logísticas que no
+                                    tienen problemas de organización de información</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="uso" class="product">
+            <div class="container">
+                <div class="main_product roomy-80">
+                    <div class="head_title text-center fix">
+                        <h2 class="text-uppercase" style="color: #000000;font-weight: bold">Forma de uso</h2>
+                        <h3 style="color: #000000">Pesflet desde el inico a fin del servicio</h3>
+                    </div>
+
+                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">1</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca1.jpg" alt="" />
+                                                </div>
+
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5>Acuerda el viaje con el cliente.</h5></center>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">2</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca2.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5>Inserta la dirección del lugar del mineral.</h5></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">3</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca3.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5>Inserta el camión del chofer.</h5></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">4</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca4.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5>Inserta la fecha del servicio.</h5></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="item">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">5</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca5.jpg" alt="" />
+                                                    <div class="port_overlay text-center">
+                                                        <a href="../assets/images/ca5.jpg" class="popup-img">+</a>
+                                                    </div>
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5> Guarda y reserva el viaje.</h5></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h2 style="font-weight: bold; color: black;">6</h2>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/ca7.jpg" alt="" />
+                                                    <div class="port_overlay text-center">
+                                                        <a href="../assets/images/ca7.jpg" class="popup-img">+</a>
+                                                    </div>
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center><h5>Obtén la información de los choferes sobre el servicio dado .</h5></center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+        </div>
+
+
+        <div id="About" class="product">
+            <div class="container">
+                <div class="main_product roomy-80">
+                    <div class="head_title text-center fix">
+                        <h2 class="text-uppercase" >Quienes somos?</h2>
+                        <h4 style="color: #000000">Estudiantes de Valle Grande</h4>
+                    </div>
+
+                    <div id="carousel-example-generic" data-ride="carousel">
+                        <ol class="carousel-indicators">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <div class="carousel-inner" role="listbox">
+                            <div class="item active">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h3 style="font-weight: bold; color: black;">Desarrollador</h3>
+                                                </center>
+
+
+                                                <div class="port_img">
+                                                    <img src="../assets/images/jose.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center>
+                                                        <h5>Jose Aricochea Crispin</h5>
+                                                    </center>
+                                                    <h6> <i class="fa fa-envelope-o"></i>
+                                                        jose.aricochea@vallegrande.edu.pe</h6>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h3 style="font-weight: bold; color: black;">Desarrollador</h3>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/flavio.png" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center>
+                                                        <h5>Flavio Illanes Gonzales</h5>
+                                                    </center>
+
+                                                    <h6><i class="fa fa-envelope-o"></i>
+                                                        flavio.illanes@vallegrande.edu.pe</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h3 style="font-weight: bold; color: black;">Jefe de Proyecto</h3>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/jesus_canales.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center>
+                                                        <h5>Jesús Canales</h5>
+                                                    </center>
+                                                    <h6><i class="fa fa-envelope-o"></i> jcanales@vallegrande.edu.pe
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="port_item xs-m-top-30">
+                                                <center>
+                                                    <h3 style="font-weight: bold; color: black;">Analísta</h3>
+                                                </center>
+                                                <div class="port_img">
+                                                    <img src="../assets/images/benjamin.jpg" alt="" />
+                                                </div>
+                                                <div class="port_caption m-top-20">
+                                                    <center>
+                                                        <h5>Benjamin Dias</h5>
+                                                    </center>
+                                                    <h6><i class="fa fa-envelope-o"></i>
+                                                        benjamin.diaz@vallegrande.edu.pe </h6>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="work" class="product">
+            <div class="container">
+                <div class="main_product roomy-80">
+                    <div class="head_title text-center fix">
+                        <h2 class="text-uppercase">Tecnologías Usadas</h2>
+                        <h4 style="color: #000000" >Para el desarrollo de Pesflet</h4>
+                    </div>
+                    <section id="features" class="features">
+                        <div >
+                            <div class="row">
+                                <div class="main_features fix roomy-70">
+                                    <div class="col-md-4">
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-thumbs-o-up"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3>JSF y Primefaces</h3>
+                                                <p>Marco de Trabajo y listado de componentes</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-database"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3>Oracle</h3>
+                                                <p>Gestor de Base de Datos</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fab fa-java"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3>Java</h3>
+                                                <p>Lenguaje de Programación</p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+
+                                <div class="main_features fix roomy-70">
+                                    <div class="col-md-4">
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-sliders"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3>Scrum</h3>
+                                                <p>Metodología de Desarrollo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-chrome"></i>
+                                            </div>
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-mobile"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3>Web y Móvil</h3>
+                                                <p>Versión de Software</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="features_item sm-m-top-30">
+                                            <div class="f_item_icon">
+                                                <i class="fa fa-sliders"></i>
+                                            </div>
+                                            <div class="f_item_text">
+                                                <h3  >Glassfish</h3>
+                                                <p>Servidor</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="test" class="test bg-grey roomy-60 fix">
+            <div class="container">
+                <div class="row">
+                    <div class="main_test fix">
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="head_title text-center fix">
+                                <h2 class="text-uppercase">Experiencias</h2>
+                                <h4 style="color: #000000">dictadas por usuarios</h4>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="test_item fix">
+                                <div class="item_img">
+                                    <img class="img-circle" src="../assets/images/dafo.jpg" alt="" />
+                                    <i class="fa fa-quote-left"></i>
+                                </div>
+
+                                <div class="item_text">
+                                    <h5>Miguel Cervantes</h5>
+                                    <h6>migue12@gmail.com</h6>
+
+                                    <p>Waoh, enserio después de haber implementado este software en mi empresa, ha hecho
+                                        que el trabajo sea mucho más rápido y fluido.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="test_item fix sm-m-top-30">
+                                <div class="item_img">
+                                    <img class="img-circle" src="../assets/images/dani.jpg" alt="" />
+                                    <i class="fa fa-quote-left"></i>
+                                </div>
+
+                                <div class="item_text">
+                                    <h5>Ana María Lopez</h5>
+                                    <h6>ana123@gmail.com</h6>
+
+                                    <p>Éste sistema hace que la emisión de facturas sea mucho más rápido, porque tengo toda la información del servicio en la palma de mi mano.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="contact" class="footer action-lage bg-black p-top-80">
+            <div class="container">
+                <div class="row">
+                    <div class="widget_area">
+                        <div class="col-md-3">
+                            <div class="widget_item widget_about">
+                                <h5 class="text-white">PESFLET</h5>
+                                <p class="m-top-20">Inventario de Guías.</p>
+                                <div class="widget_ab_item m-top-30">
+                                    <div class="item_icon"><i class="fa fa-location-arrow"></i></div>
+                                    <div class="widget_ab_item_text">
+                                        <h6 class="text-white">Dirección :</h6>
+                                        <p>
+                                            Av. girasol 123</p>
+                                    </div>
+                                </div>
+                                <div class="widget_ab_item m-top-30">
+                                    <div class="item_icon"><i class="fa fa-phone"></i></div>
+                                    <div class="widget_ab_item_text">
+                                        <h6 class="text-white">Celular :</h6>
+                                        <p>939895028</p>
+                                    </div>
+                                </div>
+                                <div class="widget_ab_item m-top-30">
+                                    <div class="item_icon"><i class="fa fa-envelope-o"></i></div>
+                                    <div class="widget_ab_item_text">
+                                        <h6 class="text-white">Correo :</h6>
+                                        <p>pesflet@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="widget_item widget_newsletter sm-m-top-50">
+                                <div class="widget_brand m-top-40">
+                                    <a href="" class="text-uppercase">logo Pesflet</a>
+                                    <p>Si te preocupa que los datos de tus guias se pierdan, no mas preocupaciones usa
+                                        Pesflet</p>
+                                </div>
+                                <ul class="list-inline m-top-20">
+                                    <li><a href=""><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href=""><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href=""><i class="fa fa-linkedin"></i></a></li>
+                                    <li><a href=""><i class="fa fa-whatsapp"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+
+
+
+    </h:body>
+</html>

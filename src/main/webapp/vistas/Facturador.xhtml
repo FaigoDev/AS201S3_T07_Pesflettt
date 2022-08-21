@@ -1,0 +1,357 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="../Plantilla.xhtml">  
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="lista" listener="#{facturador.listar()}" type="preRenderView" />
+        <body>
+            <h:head>
+                <title>Listado de Facturadores</title>
+                <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+                <a href="Plantilla.xhtml"></a>
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+            <h:body>
+                <p:growl id= "mensaje" showDetail="true" />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000;font-weight: bold "> Registro de Facturadores</h1>
+                            <hr></hr>
+                            <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                                <p:commandButton icon="pi pi-user-plus" value="Registrar" oncomplete="PF('wdlgFacturado').show();" />
+                            </p:panelGrid>
+                        </h:form>
+                    </center>                    
+                </div>
+                <h:form id="dlgFacturador" style="margin: auto" >
+
+                    <p:dialog  style="margin: 150 auto" width="950" height="300" widgetVar="wdlgFacturado" id="dlgdatos" modal="true" 
+                               showEffect="clip" header="Registro del Facturador" resizable="false" minimizable="true" maximizable="true">
+                        <p:ajax event="close" listener="${facturador.limpiar()}" update="dlgFacturador"/>
+                        <h:panelGrid columns="4" >
+
+                            <p:fragment>
+
+                                <p:outputLabel value="RUC"  style="color: #000000;font-weight: bold " /> <p:outputLabel value="*************" style="color: #ffffff" />
+
+                                <p:inputText  value ="${facturador.fac.RUCFAC}"   required="true" id="txtFactura" requiredMessage="Ingrese Nº de RUC" maxlength="11">
+                                    <p:keyFilter regEx="/[0-9]/" />
+                                    <f:validateLength  minimum="11"  maximum="11" />
+                                    <p:ajax  update="msgfactura" delay="1500" event="keyup" />
+                                    <p:tooltip for="txtFactura" value="Ingresa el Nº de RUC" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+
+                                <p:commandButton value="Buscar Por Ruc" action="#{facturador.buscarRuc()}"  update="msgfactura txtRazon txtDireccion txtUbigeo" icon="pi pi-search"/>
+
+                                <p:message id="msgfactura" for="txtFactura"   />
+                            </p:fragment> 
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" >
+                            <p:outputLabel value = "Razón Social" style="color: #000000;font-weight: bold " />    
+                            <p:inputText value ="${facturador.fac.RAZSOCFAC}" required="true" disabled="#{facturador.pase != false}" id="txtRazon"  style="width: 200%"
+                                         requiredMessage="Ingrese la Razón Social" maxlength="70" >
+                                <p:keyFilter regEx="/[A-z,' ',.]/" />
+                                <f:validateLength  minimum="5" maximum="70" />
+                                <p:ajax  update="msgNombre" delay="800" event="keyup" />
+                                <p:tooltip for="txtRazon" value="Ingresa la Razón Social" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgNombre" for="txtRazon"     />
+
+                            <p:outputLabel value = "Celular"  style="color: #000000;font-weight: bold "/>
+                            <p:inputText value ="${facturador.fac.CELFAC}" id="txtCelular" maxlength="9" required="true"
+                                         requiredMessage="Ingrese Nº de Celular" style="width: 135%" >
+                                <p:keyFilter regEx="/[0-9]/"/> 
+                                <f:validator validatorId="vFactura" />
+                                <p:ajax update="msgCelular" delay="800" event="keyup" />
+                                <p:tooltip for="txtCelular" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+
+                            <p:outputLabel value = "Correo" style="color: #000000;font-weight: bold " />
+                            <p:inputText value ="${facturador.fac.CORRFAC}" id="txtCorreo" maxlength="50"  required="true"
+                                         requiredMessage="Ingrese correo electrónico" style="width: 135%" >
+                                <f:validator validatorId="vCorreo" />
+                                <!--<f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[\p{L}\p{M}\p{N}.-]*(\.[\p{L}\p{M}]{2,})$)?"/>--> 
+                                <p:ajax  update="msgCorreo" delay="800" event="keyup" />
+                                <!--                                <p:tooltip for="txtCorreo" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>-->
+                            </p:inputText>
+                            <p:message id="msgCorreo" for="txtCorreo"  showDetail="true" />
+
+                            <p:outputLabel value = "Distrito" style="color: #000000;font-weight: bold " />
+                            <p:autoComplete value="#{facturador.fac.CODUBI}" id="txtUbigeo" disabled="#{facturador.pase != false}" completeMethod="#{facturador.completeTextUbigeo}"
+                                            inputStyle="width: 135%" minQueryLength="2" required="true">
+                                <p:ajax  update="msgUbigeo" delay="800" event="keyup"/>
+                                <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+                            <p:outputLabel value = "Dirección" style="color: #000000;font-weight: bold " />
+                            <p:inputText value ="${facturador.fac.DIRFAC}" required="true" id="txtDireccion" maxlength="100" disabled="#{facturador.pase != false}" style="width: 250%"
+                                         requiredMessage="Ingrese la dirección" >
+                                <p:keyFilter regEx="/[A-z,' ',Ñ-ñ,0-9]/" /> 
+                                <p:ajax  update="msgDireccion" delay="800" event="keyup" />
+                                <p:tooltip for="txtDireccion" value="Ingresa la dirección" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+
+                            <p:commandButton   id="botguardar" action="#{facturador.limpiar()}" disabled="false" icon="pi pi-save" value="Registrar" 
+                                               update="form:tablaFac msgfactura msgNombre msgCelular msgUbigeo msgDireccion mensaje "    
+                                               >
+                                <!--                                               oncomplete="PF('wdlgFacturado').hide);"-->
+                                <f:actionListener binding="#{facturador.registrar()}" rendered="PF('wdlgFacturado').hide);" />
+                                <p:confirm  type="popup" header="Confirmación" message="Estás seguro de Guardar?" icon="pi pi-exclamation-triangle" />       
+                            </p:commandButton>
+
+                            <p:confirmPopup global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" async="true"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no" />
+                            </p:confirmPopup> 
+                        </h:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+
+                <div class="card" style="margin-left: 50px; margin-right: 50px">
+                    <div style="float: right">
+                        <h:form id="Exportar">
+                            <p:dialog id="report" widgetVar="wdlgreport" height="100" width="400" header="Reporte de Facturadores" style="color: black;font-weight: bold">
+                                <div style="color: black; font-weight: bold">
+                                    Deseas Ver o Descargar el Reporte:
+                                </div>
+
+                                <h:panelGrid>
+                                    <b></b>
+                                    <b></b>
+                                    <b></b>
+                                    <p:commandButton value="Ver" icon="fa fa-fw fa-download" ajax="false" action="${facturador.reporteFactura()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+                                    <b></b>
+                                    <b></b>
+                                    <b></b>
+                                    <b></b>
+                                    <p:commandButton value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${facturador.descargarReporte()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+
+                                </h:panelGrid>
+
+                            </p:dialog>
+                            <!--                            <p:commandButton styleClass="p-mr-2 p-mb-2" value="Reporte" oncomplete="PF('wdlgreport').show();" icon="pi pi-file-pdf"/>
+                                                        <p:commandButton value="Excel" styleClass="" icon="pi pi-file-excel" >
+                                                            <p:dataExporter type="xls" target="form:tablaFac" fileName="Facturadores_XLS" options="#{facturador.excelOpt}"/>
+                                                        </p:commandButton>-->
+                        </h:form>
+                    </div>
+                    <div style="float: right">
+                        <h:form >
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel value="Reporte por:" style="color: black; font-weight: bold;text-align: right" />
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="Ver" icon="fa fa-fw fa-eye" ajax="false" action="${facturador.reporteFactura()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+
+                                    <p:commandButton value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${facturador.descargarReporte()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+
+                                    <p:commandButton value="Excel" styleClass="" icon="pi pi-file-excel" >
+                                        <p:dataExporter type="xls" target="form:tablaFac" fileName="Facturadores_XLS" options="#{facturador.excelOpt}"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+                    <h:form id="form">
+
+                        <div >
+                            <h:panelGrid columns="3">
+
+                                <p:panelGrid columns="1" layout="grid">
+                                    <p:outputLabel value="Filtro Por:" style="color: black; font-weight: bold" />
+                                    <h:panelGrid columns="3">
+                                        <p:selectOneMenu value="#{facturador.tipo}" >
+                                            <f:selectItem itemValue="1" itemLabel="Activos" /> 
+                                            <f:selectItem itemValue="2" itemLabel="Inactivos"  />
+                                            <f:selectItem itemValue="3" itemLabel="Todos" />
+                                            <p:ajax listener="${facturador.listar()}" update="tablaFac context"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+
+                                </p:panelGrid>
+                            </h:panelGrid>
+                        </div>
+
+                        <p:dataTable id="tablaFac" var="tblfac" value="#{facturador.listadofac}" widgetVar="filtro"
+                                     paginator="true" filteredValue="#{facturador.listadofac}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                     rows="5" selectionMode="single" selection="#{facturador.fac}" rowKey="#{tblfac.RUCFAC}"
+                                     emptyMessage="No se encontraron datos con los criterios dados" 
+                                     globalFilterFunction="#{facturador.globalFilterFunction}">
+
+                            <p:ajax event="rowSelect" update="form:context" /> 
+                            <f:facet name="header">
+                                <h3 style="color: black; font-weight: bold;text-align: center">LISTADO DE FACTURADORES</h3>
+                                <div class="p-d-flex p-jc-end">
+                                    <p:inputText id="globalFilter" onkeyup="PF('filtro').filter()" style="width:300px"
+                                                 placeholder="Buscar en todas la filas" >
+                                        <p:ajax event="mouseout" update="globalFilter tablaFac"  listener="#{facturador.listar()}"/>
+                                    </p:inputText>
+
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="ID" rendered="false">
+                                <h:outputText value="#{tblfac.IDFAC}" />
+                            </p:column>
+
+                            <p:column headerText="RUC" filterable="false"  width="100"  >
+                                <h:outputText value="#{tblfac.RUCFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Razón Social" filterable="false" >
+                                <h:outputText value="#{tblfac.RAZSOCFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Celular" width="80" filterable="false" >
+                                <h:outputText value="#{tblfac.CELFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Correo"  width="200" filterable="false" >
+                                <h:outputText value="#{tblfac.CORRFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Distrito, Provincia, Departamento" filterable="false" >
+                                <h:outputText value="#{tblfac.CODUBI}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Dirección" filterable="false" >
+                                <h:outputText value="#{tblfac.DIRFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+
+                            <p:column headerText="Estado" rendered="false" exportable="false" >
+                                <h:outputText value="#{tblfac.ESTFAC}" style="color:#{facturador.estadoColor(tblfac)};" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <!--<p:ajax event="click" update="context bEliminar bRestaurar" />-->
+                        <p:contextMenu for="tablaFac" id="context">
+                            <p:menuitem>
+                                <p:commandButton  value="Modificar" oncomplete="PF('wdlgFacturadoR').show();"
+                                                  update=":dlgFacturadorModificar"/>
+                            </p:menuitem>
+                            <p:menuitem id="bEliminar" rendered="#{facturador.fac.ESTFAC == 'A' || facturador.tipo == 1}" >
+                                <p:commandButton  value="Eliminar"  icon="ui_icon_trash" actionListener="#{facturador.eliminar(facturador.fac)}" update= "tablaFac mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas Eliminar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup>  
+                            </p:menuitem>
+
+                            <p:menuitem id="bRestaurar"  rendered="#{facturador.fac.ESTFAC == 'I' || facturador.tipo == 2}">
+                                <p:commandButton  value="Restaurar"   icon="ui_icon_trash" actionListener="#{facturador.restaurar(facturador.fac)}" update= "tablaFac mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas Restaurar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup>  
+                            </p:menuitem>
+                        </p:contextMenu>
+
+                    </h:form>
+                    <!--                        Formulario de Modificar-->
+                    <h:form id="dlgFacturadorModificar">
+                        <p:dialog style="margin: 150 auto" width="950" height="300" widgetVar="wdlgFacturadoR" id="dlgdatos" modal="true" showEffect="clip" header="Actualizacion del Facturador" resizable="false">
+                            <p:ajax event="close"  update="dlgFacturadorModificar"/>
+                            <p:outputLabel value = "#{facturador.fac.IDFAC}" for="txtFactura" rendered="false"/>
+                            <h:panelGrid columns="3">
+                                <p:outputLabel value = "RUC" style="color: #000000;font-weight: bold " />
+                                <p:inputText value ="${facturador.fac.RUCFAC}" required="true" id="txtFactura" requiredMessage="Ingrese Nº de factura" maxlength="11">
+                                    <p:keyFilter regEx="/[0-9]/" />
+                                    <f:validateLength  minimum="11"  maximum="70" />
+                                    <p:ajax  update="msgfactura" />
+                                    <p:tooltip for="txtFactura" value="Ingresa el Número de Factura" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+
+                                <p:message id="msgfactura" for="txtFactura"     />
+
+                                <p:outputLabel value = "Razón Social" style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${facturador.fac.RAZSOCFAC}" required="true" id="txtRazon" 
+                                             requiredMessage="Ingrese la Razón Social" maxlength="70" style="width: 135%">
+                                    <p:keyFilter regEx="/[A-z,' ',.]/" />
+                                    <f:validateLength  minimum="5" maximum="70" />
+                                    <p:ajax  update="msgNombre" />
+                                    <p:tooltip for="txtRazon" value="Ingresa la Razón Social" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+                                <p:message id="msgNombre" for="txtRazon"     />
+
+                                <p:outputLabel value = "Celular" style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${facturador.fac.CELFAC}" id="txtCelular" maxlength="9" 
+                                             requiredMessage="Ingrese Nº de Celular" style="width: 135%" >
+                                    <p:keyFilter regEx="/[0-9]/"/> 
+                                    <f:validator validatorId="vFactura" />
+                                    <p:ajax update="msgCelular" />
+                                    <p:tooltip for="txtCelular" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+                                <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+
+                                <p:outputLabel value = "Correo" style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${facturador.fac.CORRFAC}" id="txtCorreo" maxlength="50" 
+                                             requiredMessage="Ingrese correo electrónico" style="width: 135%" >
+                                    <f:validator validatorId="vCorreo" />
+                                    <!--<f:validateRegex pattern="(^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[\p{L}\p{M}\p{N}.-]*(\.[\p{L}\p{M}]{2,})$)?"/>--> 
+                                    <p:ajax  update="msgCorreo" delay="800" event="keyup" />
+                                    <!--                                <p:tooltip for="txtCorreo" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>-->
+                                </p:inputText>
+                                <p:message id="msgCorreo" for="txtCorreo"  showDetail="true" />
+                                <p:outputLabel value = "Ubicación" style="color: #000000;font-weight: bold "/>
+                                <p:autoComplete value="#{facturador.fac.CODUBI}" id="txtUbigeo" completeMethod="#{facturador.completeTextUbigeo}"
+                                                inputStyle="width: 135%" minQueryLength="2" required="true">
+                                    <p:ajax  update="msgUbigeo"/>
+                                    <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:autoComplete>
+                                <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+                                <p:outputLabel value = "Dirección" style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${facturador.fac.DIRFAC}" required="true" id="txtDireccion" maxlength="100" 
+                                             requiredMessage="Ingrese la dirección" style="width: 135%">
+                                    <p:keyFilter regEx="/[A-z,' ',Ñ-ñ,0-9]/" /> 
+                                    <p:ajax  update="msgDireccion" />
+                                    <p:tooltip for="txtDireccion" value="Ingresa la dirección)" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+                                <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+                            </h:panelGrid>
+                            <p:commandButton value="Modificar"  actionListener="${facturador.modificar()}" update="form:tablaFac msgfactura msgNombre msgCelular msgUbigeo msgDireccion msgCorreo mensaje" >
+                                <p:confirm type="popup" header="Confirmación" message="Estás seguro de Modificar?" icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                            <p:confirmPopup global="true">
+                                <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                            </p:confirmPopup>  
+                        </p:dialog>
+                    </h:form>
+                </div>
+
+            </h:body>
+        </body>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,229 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="../Plantilla.xhtml">
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="Actualizar" listener="#{Consultas.listar()}" type="preRenderView" />
+        <h:head>
+            <title>Consultas</title>
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <p:growl id="mensajes" severity="info,fatal" showSummary="true" showDetail="true"/>
+        
+
+        <h:body>
+
+            <div>
+                <center>
+                    <h:form id="Opciones">
+                        <h1 style="color: #000000;font-weight: bold " > Consulta de Guias </h1>
+                    </h:form>
+                </center>                    
+            </div>
+            <div class="card" style="margin-left: 50px; margin-right: 50px">
+                <h:form id="form">
+
+
+                    <p/>  
+                    <br/>
+                    <p:dialog id="report" widgetVar="wdlgreport" height="300" width="500">
+                        <div style="color: blue">
+                            Reporte Guía por Mes:
+                        </div>
+                        <p:panelGrid columns="3" >
+
+                            <p:selectOneMenu value="#{guiaC.mes}">
+                                <f:selectItem itemValue="1" itemLabel="ENERO"/>
+                                <f:selectItem itemValue="2" itemLabel="FEBRERO"/>
+                                <f:selectItem itemValue="3" itemLabel="MARZO"/>
+                                <f:selectItem itemValue="4" itemLabel="ABRIL"/>
+                                <f:selectItem itemValue="5" itemLabel="MAYO"/>
+                                <f:selectItem itemValue="6" itemLabel="JUNIO"/>
+                                <f:selectItem itemValue="7" itemLabel="JULIO"/>
+                                <f:selectItem itemValue="8" itemLabel="AGOSTO"/>
+                                <f:selectItem itemValue="9" itemLabel="SEPTIEMBRE"/>
+                                <f:selectItem itemValue="10" itemLabel="OCTUBRE"/>
+                                <f:selectItem itemValue="11" itemLabel="NOVIEMBRE"/>
+                                <f:selectItem itemValue="12" itemLabel="DICIEMBRE"/>
+                            </p:selectOneMenu>
+
+                            <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto 0"
+                                             onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-eye"
+                                             value="Visualizar"  actionListener="${guiaC.reporteGuiaMes()}" oncomplete="PF('wdlgreport').hide);"/>
+
+                            <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto 0"
+                                             onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-download"
+                                             value="Descargar"  actionListener="${guiaC.descargarReporteMes()}" oncomplete="PF('wdlgreport').hide);"/>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                    <!--<p:commandButton styleClass="p-mr-2 p-mb-2" value="Reporte" oncomplete="PF('wdlgreport').show();" icon="pi pi-file-pdf"/>-->
+
+                    <div>
+                        <p:panelGrid columns="1" layout="grid" >
+                            <p:outputLabel value="Reporte por" style="color: black;font-weight: bold" />
+
+                            <h:panelGrid columns="1" >
+                                <h:panelGrid columns="1" >
+
+                                    <p:outputLabel value="Mes" style="color: black;font-weight: bold" />
+                                    <!--<p:outputLabel />-->
+
+                                    <p:selectOneMenu value="#{guiaC.mes}">
+                                        <f:selectItem itemValue="1" itemLabel="ENERO"/>
+                                        <f:selectItem itemValue="2" itemLabel="FEBRERO"/>
+                                        <f:selectItem itemValue="3" itemLabel="MARZO"/>
+                                        <f:selectItem itemValue="4" itemLabel="ABRIL"/>
+                                        <f:selectItem itemValue="5" itemLabel="MAYO"/>
+                                        <f:selectItem itemValue="6" itemLabel="JUNIO"/>
+                                        <f:selectItem itemValue="7" itemLabel="JULIO"/>
+                                        <f:selectItem itemValue="8" itemLabel="AGOSTO"/>
+                                        <f:selectItem itemValue="9" itemLabel="SEPTIEMBRE"/>
+                                        <f:selectItem itemValue="10" itemLabel="OCTUBRE"/>
+                                        <f:selectItem itemValue="11" itemLabel="NOVIEMBRE"/>
+                                        <f:selectItem itemValue="12" itemLabel="DICIEMBRE"/>
+                                    </p:selectOneMenu>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="2" >
+                                    <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto 0"
+                                                     onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-eye"
+                                                     value="Visualizar Reporte"  actionListener="${guiaC.reporteGuiaMes()}" oncomplete="PF('wdlgreport').hide);"/>
+
+                                    <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto 0"
+                                                     onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-download"
+                                                     value="Descargar Reporte"  actionListener="${guiaC.descargarReporteMes()}" oncomplete="PF('wdlgreport').hide);"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:panelGrid>
+                    </div>
+
+                    <p:dataTable id="tablaCon" var="tblcon" value="#{Consultas.listadocon}" paginator="true"
+                                 emptyMessage="Listado de la consulta" selectionMode="single"
+                                 selection="#{Consultas.gui}"  rowKey="#{tblcon.IDCONGUI}" 
+                                 rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                 rows="5" >
+                        <p:ajax event="rowSelect" listener="#{Consultas.onRowSelect}" update="form:tblDetalle" />
+                        <f:facet name="header">
+                            <h3 style="color: black; font-weight: bold;text-align: center">Listado de guías</h3>
+                        </f:facet>
+
+
+                        <p:column headerText="ID" style="width: 5%;alignment-adjust: central"  rendered="false">
+                            <center><h:outputText value="#{tblcon.IDCONGUI}" /></center>
+                        </p:column>
+
+                        <p:column headerText="Transportista" width="100">
+                            <h:outputText value="#{tblcon.CODGUITRA}" />
+                        </p:column>
+
+                        <p:column headerText="Remitente" width="100" >
+                            <h:outputText value="#{tblcon.CODGUIREM}" />
+                        </p:column>  
+                        <p:column headerText="Facturador" width="200" >
+                            <h:outputText value="#{tblcon.fac.RAZSOCFAC}" />
+                        </p:column>  
+                        <p:column headerText="Planta Minera" width="200">
+                            <h:outputText value="#{tblcon.plan.NOMPLAMIN}"/>
+                        </p:column>
+
+                        <p:column headerText="Sacos" width="30" styleClass="centrarColumna">
+                            <h:outputText value="#{tblcon.TOTCANSAC}" />
+                        </p:column>
+                        <p:column headerText="Toneladas" width="50" styleClass="centrarColumna" >
+                            <h:outputText value="#{tblcon.TOTTMHCON}" style="alignment-adjust: central" />
+                        </p:column>
+
+                        <!--                        <p:column headerText="Generar Control" rendered="true" width="120" >
+                                                    <p:commandButton  value="Mostrar"  icon="pi pi-search" action="#{Consultas.mostraDetalle()}" onclick="this.form.target = '_blank'" ajax="false"/>
+                                                </p:column>-->
+
+                        <f:facet name="footer">
+                            Hay en total: #{fn:length(Consultas.listadocon)} registros.
+                        </f:facet>
+
+
+                    </p:dataTable>
+                    <!--                    <p:contextMenu for="tablaCon" id="context">
+                    
+                    
+                                            <p:menuitem id="bMostrarB"  >
+                                                <p:commandButton  value="Mostrar" oncomplete="PF('wdlgReporte').show();" update="dlgReporte" />
+                                            </p:menuitem>
+                                        </p:contextMenu>-->
+                    <br/>
+
+
+                    <p:dataTable id="tblDetalle" var="detGuia" value="#{Consultas.listadodet}"
+                                 emptyMessage="Se tiene guia sin detalle" >
+                        <f:facet name="header">
+                            <h3 style="color: black; font-weight: bold;text-align: center">Detalle de la Guía</h3>
+                        </f:facet>
+                        <p:column headerText="Id" style="width: 5%;" rendered="false" >
+                            <h:outputText value="#{detGuia.IDDETCON}"  />
+                        </p:column>
+                        <p:column headerText="Mineral" width="150">
+                            <h:outputText value="#{detGuia.min.NOMMIN}" />
+                        </p:column>
+                        <p:column headerText="Tipo" width="150">
+                            <h:outputText value="#{detGuia.min.TIPMIN}" />
+                        </p:column>
+                        <p:column headerText="Situación" width="150">
+                            <h:outputText value="#{detGuia.min.SITMIN}" />
+                        </p:column>
+
+                        <p:column headerText="Sacos" width="50" styleClass="centrarColumna" >
+                            <h:outputText value="#{detGuia.CANSAC}" />
+                        </p:column>  
+
+                        <p:column headerText="Toneladas" width="50"  styleClass="centrarColumna" >
+                            <h:outputText value="#{detGuia.TMHDETCON}"  />
+                        </p:column>     
+
+                        <f:facet name="footer">
+                            Hay en total: #{fn:length(Consultas.listadodet)} registros.
+                        </f:facet>
+                    </p:dataTable>
+
+                    <center>
+                        <div style="float: top">
+                            <!--<p:commandButton  value="Mostrar" oncomplete="PF('wdlgReporte').show();" update="dlgDatos" />-->
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel value="Reporte para" style="color: black; font-weight: bold;text-align: right" />
+                                <h:panelGrid columns="3">
+                                    <p:commandButton  value="Visualizar"  icon="pi pi-eye" action="#{Consultas.mostraDetalle()}" onclick="this.form.target = '_blank'" ajax="false"/>
+                                    <p:commandButton  value="Descargar"  icon="pi pi-download" action="#{Consultas.descargarReporteDetalle()}" onclick="this.form.target = '_blank'" ajax="false"/>
+                                </h:panelGrid>
+
+                            </p:panelGrid>
+                        </div>
+                    </center>
+
+                    <p:dialog id="dlgDatos" header="Reporte de Guía y Detalle" widgetVar="wdlgReporte"  >
+                        <h:panelGrid>
+                            <p:commandButton  value="Mostrar"  icon="pi pi-search" action="#{Consultas.mostraDetalle()}" onclick="this.form.target = '_blank'" ajax="false"/>
+                            <p:commandButton  value="Descargar"  icon="pi pi-file-pdf" action="#{Consultas.descargarReporteDetalle()}" onclick="this.form.target = '_blank'" ajax="false"/>
+                        </h:panelGrid>
+
+
+
+                    </p:dialog>
+
+
+
+
+
+                </h:form> 
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

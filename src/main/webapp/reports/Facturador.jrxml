@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="simple" pageWidth="841" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="701" leftMargin="70" rightMargin="70" topMargin="70" bottomMargin="50" uuid="4eedbb89-b4f6-4469-9ab6-f642a1688cf7">
+	<property name="template.engine" value="tabular_template"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#EEEFF0"/>
+		</conditionalStyle>
+	</style>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#CACED0">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="rgba(216, 216, 216, 0.0)"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="tableDataset" uuid="541402f3-a81b-4ed5-ba46-5411d69a957f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<queryString language="SQL">
+			<![CDATA[SELECT * FROM VFacturadorA]]>
+		</queryString>
+		<field name="IDFAC" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="IDFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="IDFAC"/>
+		</field>
+		<field name="RUCFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RUCFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="RUCFAC"/>
+		</field>
+		<field name="RAZSOCFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+		</field>
+		<field name="CELFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CELFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="CELFAC"/>
+		</field>
+		<field name="DIRFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DIRFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="DIRFAC"/>
+		</field>
+		<field name="CORRFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CORRFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="CORRFAC"/>
+		</field>
+		<field name="DISFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="DISFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="DISFAC"/>
+		</field>
+		<field name="ORDEN" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="ORDEN"/>
+			<property name="com.jaspersoft.studio.field.label" value="ORDEN"/>
+		</field>
+	</subDataset>
+	<queryString>
+		<![CDATA[SELECT 
+	f.IDFAC AS IDFAC,
+	f.RUCFAC AS RUCFAC,
+	UPPER(f.RAZFAC) AS RAZSOCFAC,
+	f.CELFAC AS CELFAC,
+	UPPER(f.DIRFAC) AS DIRFAC,
+	UPPER(f.CORFAC) AS CORRFAC,
+	CONCAT(CONCAT(CONCAT(u.NOMDIS,', '),CONCAT(u.NOMPRO,', ')),NOMDEP) AS DISFAC,
+	ROW_NUMBER() OVER (ORDER BY f.IDFAC DESC) AS ORDEN
+
+FROM FACTURADOR f
+	JOIN UBIGEO u ON 
+	f.CODUBI = u.CODUBI
+WHERE 
+	ESTFAC = 'A']]>
+	</queryString>
+	<field name="RUCFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RUCFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="RUCFAC"/>
+	</field>
+	<field name="RAZSOCFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+	</field>
+	<field name="CELFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CELFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="CELFAC"/>
+	</field>
+	<field name="DIRFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DIRFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="DIRFAC"/>
+	</field>
+	<field name="CORRFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CORRFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="CORRFAC"/>
+	</field>
+	<field name="DISFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="DISFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="DISFAC"/>
+	</field>
+	<title>
+		<band height="178" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement x="0" y="74" width="701" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="567" y="50" width="50" height="20" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd MMM yyyy">
+				<reportElement x="617" y="50" width="84" height="20" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="95" y="0" width="275" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tranporte Hermanos Yllanes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="55" width="205" height="15" uuid="b8cc42fd-b569-497d-834d-7e854040ad18"/>
+				<text><![CDATA[939056505, hmnosyllanes@gmail.com
+correo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="25" width="215" height="15" uuid="c226e44d-3bb5-4145-b0b3-903bf1d79fde"/>
+				<text><![CDATA[Huaynacapac Nº18]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="40" width="205" height="15" uuid="b96f7183-44f8-43ad-ba60-43d8fbf50b6e"/>
+				<text><![CDATA[Vista Alegre, Nazca, Ica]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="0" y="118" width="701" height="60" uuid="a2ac2091-1199-4f22-bf3e-553658438cce">
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="tableDataset" uuid="15f873c9-c8e4-4739-a8b2-2451f67f0250">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="70" uuid="5e51dd1d-5749-40e6-9db9-7e8094974a87">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="70" height="30" forecolor="#030303" backcolor="#FFFFFF" uuid="80a6763e-10a1-41fa-9d5f-651d586ec048"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[N° RUC]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="70" height="30" uuid="51d13416-9124-4635-9625-32eb0192a792"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{RUCFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="261d4d7b-3abb-4730-a576-3f1f7b7e4806">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="140" height="30" forecolor="#000000" uuid="b79110af-e15b-443a-96a6-d1ad91436340"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[RAZON SOCIAL]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="140" height="30" uuid="99ff54c7-15a1-4fdd-b8d5-afb32b28c424"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{RAZSOCFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="336d24c1-6f93-42ea-915f-49e61c7da59a">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="60" height="30" forecolor="#000000" uuid="03b0cf20-d5ea-431b-9b88-69eadcaa0740"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="11" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CELULAR]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="60" height="30" uuid="aa732c0e-ac43-4265-b037-46d53438a4b8"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CELFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="140" uuid="261b0149-d544-4de4-92a1-6e72cb7f3b17">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="140" height="30" forecolor="#000000" uuid="50576bac-3c2b-40bb-91c2-35d879449f2e"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="11" isBold="true"/>
+								</textElement>
+								<text><![CDATA[CORREO ELECTRONICO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="140" height="30" uuid="a32bc0f5-8af8-469c-9cdd-2a396798ab2e"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{CORRFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="d92a1a79-3176-406a-a269-dbb5e1374d4a">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="100" height="30" forecolor="#000000" uuid="83b7819c-6f52-4e40-b0b9-3c6f3c441cbf"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="8" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DISTRITO, PROVINCIA, DEPARTAMENTO]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="100" height="30" uuid="2876e7b1-f050-468f-a9ab-a7cf663b3898"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DISFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="191" uuid="cd668005-fbea-4401-bf59-d0a99340470a">
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement key="" style="Column header" mode="Opaque" x="0" y="0" width="191" height="30" forecolor="#000000" uuid="3f0f0632-4a43-4f01-8e76-1ee7f9e2c259"/>
+								<box leftPadding="2">
+									<pen lineColor="#666666"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="12" isBold="true"/>
+								</textElement>
+								<text><![CDATA[DIRECCION]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField textAdjust="StretchHeight">
+								<reportElement style="Detail" x="0" y="0" width="191" height="30" uuid="b10b50ce-1a67-4e39-a531-27192ba1b2f7"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="DejaVu Sans" size="9"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{DIRFAC}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<image>
+				<reportElement x="0" y="15" width="85" height="45" uuid="622c8667-51f6-41f1-90cb-405b0d98b1a3"/>
+				<imageExpression><![CDATA["C:/Users/Usuario/Documents/NetBeansProjects/PESFLET_Maven/src/main/webapp/resources/images/logoPesflet.png"]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="110" width="701" height="1" uuid="ca27126a-f5c9-4e6f-8e93-fdfa2f9d7bed">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="80" width="701" height="24" uuid="f107496a-6967-436f-9ac4-f4726cb80d98">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE FACTURADORES]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="691" y="0" width="10" height="20" uuid="e1780bf3-b9b9-40ca-ac51-0dc6473ea582">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="662" y="0" width="29" height="20" uuid="680970d7-4969-4935-a607-009b2fa0ad5a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Pag. ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

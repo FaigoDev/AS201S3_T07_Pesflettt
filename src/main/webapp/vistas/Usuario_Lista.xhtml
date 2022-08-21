@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml">
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="lista" listener="#{usuarioC.listar()}" type="preRenderView" />
+        <event listener="#{usuarioC.limpiar()}" type="preRenderView" />
+        <h:head>     
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+        <h:body>
+            <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true">
+                <p:autoUpdate/>
+            </p:growl>
+            <p:separator/>
+            <center>
+                <h1 style="color: #000000;font-weight: bold "> Registro de Usuarios</h1>
+                <hr></hr>
+            </center>
+
+
+            <p:separator/>
+            <center>
+                <h:form id="Opciones">
+                    <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                        <p:commandButton icon="pi pi-user-plus" value="Registrar" action="Usuario"/>
+                    </p:panelGrid>
+                </h:form>
+            </center> 
+            <h:form id="listado">
+
+
+
+                <p:dataTable id="tablaUsu" var="tblusu" value="#{usuarioC.listadousu}" widgetVar="filtro"
+                             paginator="true" filteredValue="#{usuarioC.listadousu}"
+                             rows="5" selectionMode="single" selection="#{usuarioC.usu}" rowKey="#{tblusu.IDUSU}"
+                             emptyMessage="No se encontraron datos con los criterios dados">
+
+                    <f:facet name="header">
+                        <!--                        <div style="font-weight: bold">Listado de Usuarios</div>
+                                                <div class="p-d-flex p-jc-end">
+                                                    <p:inputText id="globalFilter" onkeyup="PF('filtro').filter()" style="width:300px"
+                                                                 placeholder="Buscar el todas la filas" />
+                                                </div>-->
+                    </f:facet>
+
+                    <p:column headerText="ID" rendered="false">
+                        <h:outputText value="#{tblusu.IDUSU}" />
+                    </p:column>
+
+                    <p:column headerText="Usuario" width="80">
+                        <h:outputText value="#{tblusu.NOMUSU}" />
+                    </p:column>
+
+                    <p:column headerText="Nombre" width="150">
+                        <h:outputText value="#{tblusu.NOMPER}"  />
+                    </p:column>
+
+                    <p:column headerText="Correo" width="180" >
+                        <h:outputText value="#{tblusu.CORPER}" />
+                    </p:column>
+
+                    <p:column headerText="Celular" width="70" >
+                        <h:outputText value="#{tblusu.CELPER}" />
+                    </p:column>
+
+                    <p:column headerText="Distrito, Provincia, Departamento" width="180">
+                        <h:outputText value="#{tblusu.CODUBI}" />
+                    </p:column>
+
+                    <p:column headerText="Dirección" width="200">
+                        <h:outputText value="#{tblusu.DIRPER}" />
+                    </p:column>
+
+                    <p:column headerText="Cargo" width="100">
+                        <h:outputText value="#{tblusu.CARGO}" >
+                            <f:converter converterId="convertCargo"/>
+                        </h:outputText>
+                    </p:column>
+
+
+                    <!--                    <p:column headerText="Correo"  width="200" filterable="false" >
+                                            <h:outputText value="#{tblfac.CORRFAC}" />
+                                        </p:column>-->
+
+
+                </p:dataTable>
+
+
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>

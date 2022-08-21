@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <link href="../resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+    <ui:define name="content">
+        <body>
+            <h:head>
+                <title>CONTROL_GUIA</title>
+                <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+
+            <h:form  id="lis" >
+                <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+                <event id="lista" listener="#{guiaC.listar()}" type="preRenderView" />
+                <event id="listaV" listener="#{viajeC.listar()}" type="preRenderView" />
+                <event id="listaV" listener="#{guiaC.limpiar()}" type="preRenderView" />
+            </h:form>
+
+            <h:body>
+
+                <style>
+                    body {background-color: lightskyblue;}
+                </style>
+
+                <p:growl id= "mensaje" showDetail="true" />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000;font-weight: bold " > Registro de Guias</h1>
+                            <hr></hr>
+                            <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                                <p:commandButton icon="pi pi-user-plus" value="Registrar" action="Control_Registro"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </center>                    
+                </div>
+                <p:confirmDialog  global="true">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes"  update="dlgdatos" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                </p:confirmDialog>  
+
+                <!--            <p:commandButton value="PDF" styleClass="p-mr-2 p-mb-2" icon="pi pi-file-pdf">
+                                <p:dataExporter type="pdf" target="form:tablaCon" fileName="Minerales_PDF" options="#{guiaC.pdfOpt}"/>
+                                </p:commandButton>-->
+
+
+                <div class="card" style="margin-left: 50px; margin-right: 50px">
+                    <div style="float: right">
+                        <h:form >
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel rendered="#{usuarioC.pase == '2'}" value="Reporte por:" style="color: black; font-weight: bold;text-align: right" />
+                                <h:panelGrid columns="3">
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Ver" icon="fa fa-fw fa-eye" ajax="false" action="${guiaC.reporteGuia()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${guiaC.descargarReporte()}" update="mensaje"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Excel" styleClass="" icon="pi pi-file-excel">
+                                        <p:dataExporter type="csv" target="form:tablaCon" fileName="Minerales_CSV" options="#{guiaC.excelOpt}"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+                    <h:form id="form">  
+
+                        <div >
+                            <h:panelGrid columns="3">
+                                <p:panelGrid columns="1" layout="grid">
+                                    <p:outputLabel value="Filtro Por:" style="color: black; font-weight: bold" />
+                                    <h:panelGrid columns="3">
+                                        <p:selectOneMenu value="#{guiaC.tipo}" style="alig" >
+                                            <f:selectItem itemValue="1" itemLabel="Activos" /> 
+                                            <f:selectItem itemValue="2" itemLabel="Inactivos"  />
+                                            <f:selectItem itemValue="3" itemLabel="Todos" />
+                                            <p:ajax listener="${guiaC.listar()}" update="tablaCon context"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </p:panelGrid>
+                            </h:panelGrid>
+                        </div>
+
+                        <p:dataTable id="tablaCon" var="tblcon" value="#{guiaC.listadogui}" widgetVar="filtro"
+                                     paginator="true" filteredValue="#{guiaC.listadogui}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                     rows="5" selectionMode="single" selection="#{guiaC.gui}" rowKey="#{tblcon.IDCONGUI}"
+                                     emptyMessage="No se encontraron datos con los criterios dados"
+                                     >
+
+                            <p:ajax event="rowSelect" update="form:context" />
+                            <f:facet name="header">
+                                <h3 style="color: black; font-weight: bold;text-align: center">LISTADO DE GUIAS</h3>
+
+                            </f:facet>
+
+                            <p:column headerText="ID" rendered="false" >
+                                <h:outputText value="#{tblcon.IDCONGUI}"  />
+                            </p:column>
+
+                            <p:column headerText="VIAJE" width="100" rendered="false" >
+                                <h:outputText value="#{tblcon.viaje.IDVIA}"   />
+                            </p:column>
+
+                            <p:column headerText="Guía Transportista" width="100" style="margin: 0"  filterMaxLength="11" >
+                                <h:outputText value="#{tblcon.CODGUITRA}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Guía Remitente"  width="100" style="margin: 0"  filterMaxLength="11">
+                                <h:outputText value="#{tblcon.CODGUIREM}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Facturador" width="200">
+                                <h:outputText value="#{tblcon.fac.RAZSOCFAC}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Planta Minera" width="200">
+                                <h:outputText value="#{tblcon.plan.NOMPLAMIN}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Sacos" width="40">
+                                <h:outputText value="#{tblcon.TOTCANSAC}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Toneladas" width="63" >
+                                <h:outputText value="#{tblcon.TOTTMHCON}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha de Viaje" width="100">
+                                <h:outputText id="fecha" value="#{tblcon.viaje.FECVER}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                                <!--<f:convertDateTime for="fecha" pattern="dd-MMM-yyyy"  />-->
+                            </p:column>
+
+                            <p:column headerText="Fecha de llenado" width="100">
+                                <h:outputText value="#{tblcon.FECGUIVER}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                            <p:column headerText="Estado" rendered="false" width="100" exportable="false">
+                                <h:outputText value="#{tblcon.ESTCONGUI}" style="color:#{guiaC.estadoColor(tblcon)};"/>
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:contextMenu for="tablaCon" id="context">
+                            <p:menuitem>
+                                <p:commandButton  value="Modificar" action="Control_Modificar" actionListener="#{guiaC.traerViaje()}"/>
+                            </p:menuitem>
+                            <p:menuitem id="bEliminar" rendered="#{guiaC.gui.ESTCONGUI == 'A' || facturador.tipo == 1}" >
+                                <p:commandButton value="Eliminar" icon="ui_icon_trash" actionListener="#{guiaC.eliminar(guiaC.gui)}" update= "tablaCon mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas eliminar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup>
+                            </p:menuitem>
+
+                            <p:menuitem id="bRestaurar"  rendered="#{guiaC.gui.ESTCONGUI == 'I' || facturador.tipo == 2}">
+                                <p:commandButton  value="Restaurar"   icon="ui_icon_trash" actionListener="#{guiaC.restaurar(guiaC.gui)}" update= "tablaCon mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas Restaurar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup>  
+                            </p:menuitem>
+                        </p:contextMenu>
+
+                    </h:form>
+                    <!--                        Formulario de Modificar-->
+                    <h:form id="dlgControlModificar">
+                        <p:dialog style="margin: 150 auto" width="950" height="300" widgetVar="wdlgGuiaR" id="dlgdatos" modal="true" showEffect="clip" header="Guias" resizable="false">
+                            <p:ajax event="close"  update="dlgControlModificar"/>
+                            <h:panelGrid columns="3">
+
+                            </h:panelGrid>
+                            <p:commandButton value="Modificar" oncomplete="PF('wdlgControlR').hide);" actionListener="${guiaC.modificar()}" update="dlgControlModificar" >
+                                <p:panelGrid columns="1" style="align-content: center">
+
+                                </p:panelGrid>
+                                <p:confirm  type="popup" header="Confirmación" message="Estás seguro de Modificar?" icon="pi pi-exclamation-triangle" />
+                            </p:commandButton>
+
+                            <!--<p:confirmPopup style="margin: initial" global="true" showEffect="fade" hideEffect="fade">-->
+                            <!--<p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" async="true" />-->
+                            <!--<p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />-->
+                            <!--</p:confirmPopup>-->
+                        </p:dialog>
+                    </h:form>
+
+                </div>
+
+
+            </h:body>
+
+        </body>
+
+    </ui:define>
+
+</ui:composition>

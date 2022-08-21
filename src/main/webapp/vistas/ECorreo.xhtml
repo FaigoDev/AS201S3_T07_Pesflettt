@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <p:growl id= "mensaje" showDetail="true" />
+        <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="listaV" listener="#{guiaC.limpiar()}" type="preRenderView" />
+        <h:form>
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Correo"/>
+                <p:inputText value="#{guiaC.correo}"  />
+                <p:outputLabel value="Asunto"/>
+                <p:inputText value="#{guiaC.asunto}"  />
+                <p:outputLabel value="Cuerpo"/>
+
+                <!--<p:textEditor widgetVar="editor1" value="#{guiaC.cuerpo}" height="300"  secure="false" />-->
+
+
+                <p:inputText  value="#{guiaC.cuerpo}" />
+
+            </p:panelGrid>
+
+            <p:commandButton  value="Enviar Correo" actionListener="#{guiaC.enviarCorreo()}" update="mensaje" />
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

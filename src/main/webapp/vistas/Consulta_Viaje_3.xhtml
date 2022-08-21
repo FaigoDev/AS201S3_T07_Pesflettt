@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="../Plantilla.xhtml">
+
+    <ui:define name="content">
+
+        <h:head>
+            <title>Consultas</title>
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <p:growl id="mensajes" severity="info,fatal" showSummary="true" showDetail="true"/>
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+
+
+        <h:body>
+
+            <div>
+                <center>
+                    <h:form id="Opciones">
+                        <h1 style="color: #000000;font-weight: bold " > Consulta de Viajes </h1>
+                    </h:form>
+                </center>                    
+            </div>
+            <div class="card" style="margin-left: 50px; margin-right: 50px">
+                <h:form id="form">
+
+
+
+                    <div>
+                        <h5 style="color: black;font-weight: bold">Reporte por</h5>
+
+                        <div class="card">
+                            <p:tabMenu activeIndex="#{param.i}">
+                                <p:menuitem value="Conductor y Mes" outcome="/vistas/Consulta_Viaje" icon="pi pi-fw pi-home">
+                                    <f:param name="i" value="0"/>
+                                </p:menuitem>
+                                <p:menuitem value="Planta Minera" outcome="/vistas/Consulta_Viaje_2" icon="pi pi-fw pi-calendar">
+                                    <f:param name="i" value="1"/>
+                                </p:menuitem>
+                                <p:menuitem value="Vehículo" outcome="/vistas/Consulta_Viaje_3" icon="pi pi-fw pi-pencil">
+                                    <f:param name="i" value="2"/>
+                                </p:menuitem>
+                            </p:tabMenu>
+                        </div>
+
+                        <div style="color: black;font-weight: bold">
+                            <p class="p-m-0">
+                                <p:fragment >
+                                    <p:panelGrid columns="3" layout="flex">
+                                        <p:panelGrid columns="2" >
+
+                                            <p:outputLabel value = "Marca - Placa del Vehículo" for="txtVehiculo" style="color: black;font-weight: bold" />
+                                            <!--<p:outputLabel value = "" for="txtVehiculo" />-->
+
+                                            <p:autoComplete value ="${viajeC.via.IDVEH}" required="false" id="txtVehiculo" minQueryLength="1" 
+                                                            requiredMessage="Ingrese la marca del Vehículo" maxlength="50" completeMethod="#{viajeC.completeTextVehiculo}">
+                                                <!--<p:keyFilter regEx="/[A-z,' ']/" />-->
+                                                <f:validateLength  maximum="50" />
+
+                                            </p:autoComplete>
+                                        </p:panelGrid>
+                                        <p:panelGrid columns="2" >
+                                            <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto"
+                                                             onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-eye"
+                                                             value="Visualizar Reporte"  actionListener="${viajeC.reporteConVehiculo()}"/>
+                                            <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto"
+                                                             onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-download" 
+                                                             value="Descargar Reporte"  actionListener="${viajeC.descargarReporteVehiculo()}"/>
+                                        </p:panelGrid>
+                                    </p:panelGrid>
+                                </p:fragment>
+                            </p>
+                        </div>
+                    </div>
+                </h:form> 
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>

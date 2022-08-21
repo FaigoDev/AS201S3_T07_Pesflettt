@@ -1,0 +1,180 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="../Plantilla.xhtml">
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+
+        <body>
+            <h:head>
+                <title>Usuarios</title>
+                <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+                <a href="Plantilla.xhtml"></a>
+            </h:head>
+            <h:body >
+
+                <p:growl id= "msj" showDetail="true"  />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+                <style>
+                    body {background-color: lightskyblue;}
+                </style>
+
+
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000" > Registro de Información - Usuario</h1>
+                            <hr></hr>
+                        </h:form>
+                    </center>                    
+                </div>             
+
+                <h:form style="margin: auto" id="form" >
+                    <div style="background-color: white">
+
+
+                        <p:panelGrid columns="6" layout="grid" >
+
+                            <p:outputLabel value="Nombre de Usuario"  for="nomusu" style="font-weight: bold; color: black"  />
+                            <p:inputText id="nomusu" style="width: 150px" value="#{usuarioC.usu.NOMUSU}" maxlength="20" required="true" requiredMessage="Ingrese Nombre de Usuario">
+                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_í_ó_ú]/" />
+                                <f:validateLength  for="nomusu" minimum="5"  maximum="20"  />
+                                <p:ajax  update="msgUsuario" delay="2000" event="keyup" />
+                            </p:inputText>
+                            <p:message id="msgUsuario" for="nomusu"  showDetail="true" />
+
+                            <p:outputLabel value="Correo Electronico" style="font-weight: bold; color: black" />
+
+                            <p:inputText style="width: 150px"  value="#{usuarioC.usu.CORPER}" id="txtCorreo" maxlength="50"  required="true" requiredMessage="Ingrese correo electrónico" >
+                                <f:validator validatorId="vCorreo" />
+                                <p:ajax  update="msgCorreo " delay="2000" event="keyup" />
+
+                            </p:inputText>
+
+                            <p:message id="msgCorreo" for="txtCorreo"  />
+
+                        </p:panelGrid>
+                        <p:panelGrid columns="6"  layout="grid" >
+
+                            <p:outputLabel value = "Celular" for="txtCelular" style="font-weight: bold; color: black"/>
+                            <p:inputText style="width: 150px" value ="${usuarioC.usu.CELPER}" id="txtCelular" maxlength="9" required="true"
+                                         requiredMessage="Ingrese Nº de Celular">
+                                <p:keyFilter regEx="/[0-9]/"/> 
+                                <f:validator validatorId="vFactura" />
+                                <p:ajax update="msgCelular" delay="800" event="keyup" />
+                                <p:tooltip for="txtCelular" value="Ingresa el Celular" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+
+
+                            <p:outputLabel value="DNI" for="TxtDni" style="font-weight: bold; color: black"/>
+                            <p:inputText style="width: 150px" value="#{usuarioC.usu.DNIPER}"  id="TxtDni" required="true" requiredMessage="Ingrese DNI"  maxlength="8" >
+                                <p:keyFilter regEx="/[0-9]/"/>
+                                <f:validateLength  minimum="8"  maximum="8" />
+                                <p:ajax  update="msgDni" delay="1000" event="keyup" />
+                            </p:inputText>
+                            <p:message id="msgDni" for="TxtDni"  />
+
+                        </p:panelGrid>
+                        <p:fragment >
+                            <p:panelGrid columns="3"  layout="grid" >
+                                <p:outputLabel value=""  style="font-weight: bold; color: black"/>
+                                <p:outputLabel value=""  style="font-weight: bold; color: black"/>
+                                <p:commandButton value="Buscar Por Dni" action="#{usuarioC.buscarDni()}"  update="TxtNombre TxtApellido msj" icon="pi pi-search"/>
+                            </p:panelGrid>
+                        </p:fragment>
+                        <p:panelGrid columns="6"  layout="grid" >
+                            <p:outputLabel value="Nombres"   style="font-weight: bold; color: black" />
+                            <p:inputText  style="width: 150px" value="#{usuarioC.usu.NOMPER}" maxlength="30" disabled="#{usuarioC.paseDni != false}" id="TxtNombre" required="true" requiredMessage="Ingrese DNI">
+                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_í_ó_ú]/"/>
+                                <p:ajax  update="msgNom" delay="500" event="keyup" />
+                            </p:inputText>
+                            <p:message id="msgNom" for="TxtNombre"  showDetail="true" />
+
+                            <p:outputLabel  value="Apellidos" style="font-weight: bold; color: black"  />
+                            <p:inputText style="width: 150px" id="TxtApellido" value="#{usuarioC.usu.APEPER}" required="true" disabled="#{usuarioC.paseDni != false}" requiredMessage="Ingrese Apellidos">
+                                <p:keyFilter regEx="/[A-Z_a-z_ñ_á_é_í_ó_ú]/"/>
+                                <p:ajax  update="msgApe" delay="500" event="keyup" />
+                            </p:inputText>
+                            <p:message id="msgApe" for="TxtApellido"  showDetail="true" />
+
+                            <p:outputLabel value="Sueldo"  style="font-weight: bold; color: black" />
+                            <p:spinner id="TxtSueldo"  value="#{usuarioC.usu.SUEPER}" stepFactor="100.0" min="500"  max="8000.0" required="true" requiredMessage="Ingrese el sueldo" />
+                            <p:message id="msgsue" for="TxtSueldo"  showDetail="true" />
+
+                            <p:outputLabel value="Cargo" style="font-weight: bold; color: black" />
+                            <p:selectOneMenu value="#{usuarioC.usu.CARGO}" id="cargo"  required="true" requiredMessage="Ingrese el cargo" >
+                                <f:selectItem itemValue="CONDUCTOR" itemLabel="Conductor" />
+                                <f:selectItem itemValue="ADMINISTRADOR" itemLabel="Administrador" />
+                                <p:ajax listener="${usuarioC.licencia()}" update="form" delay="100" />
+                            </p:selectOneMenu>
+                            <p:message id="msgcar" for="cargo"  showDetail="true" />
+
+                            <p:outputLabel value = "Distrito"  style="font-weight: bold; color: black" for="txtUbigeo"/>
+                            <p:autoComplete value="#{usuarioC.usu.CODUBI}" id="txtUbigeo" completeMethod="#{facturador.completeTextUbigeo}" requiredMessage="Ingrese el distrito"
+                                            inputStyle="width: 110%" minQueryLength="2" required="true">
+                                <p:ajax  update="msgUbigeo" delay="800" event="keyup"/>
+                                <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+                            <p:outputLabel value = "Dirección" for="txtDireccion"  style="font-weight: bold; color: black"/>
+                            <p:inputText style="width: 150px" value ="${usuarioC.usu.DIRPER}" required="true"  id="txtDireccion" maxlength="100" 
+                                         requiredMessage="Ingrese la dirección" >
+                                <p:keyFilter regEx="/[A-z,' ',Ñ-ñ,0-9,.]/" /> 
+                                <p:ajax  update="msgDireccion" delay="800" event="keyup" />
+                                <p:tooltip for="txtDireccion" value="Ingresa la dirección" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+
+                        </p:panelGrid>
+
+                        <center>
+                            <div style="float: top">
+                                <h:panelGrid columns="4" >
+                                    <p:outputLabel id="licText" value="Licencia"  style="font-weight: bold; color: black" rendered="#{usuarioC.activarLicencia != true}"/>
+                                    <p:outputLabel value="****" style="color: white"  />
+                                    <p:inputText style="width: 150px" value="#{usuarioC.usu.LICCON}" maxlength="9" id="TxtLicencia"  rendered="#{usuarioC.activarLicencia != true}"  required="#{usuarioC.activarLicencia != true}" requiredMessage="Insertar Licencia">
+                                        <p:keyFilter regEx="/[A_0-9]/"/>
+                                        <f:validateLength  minimum="9"  maximum="9" />
+                                        <p:ajax  update="msglic" delay="500" event="mouseout" />
+                                    </p:inputText>
+                                    <p:message id="msglic" for="TxtLicencia"  showDetail="true" />
+                                </h:panelGrid>
+                            </div>
+                        </center>
+
+                        <center>
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:commandButton icon="pi pi-user-plus" value="Crear"  actionListener="#{usuarioC.solicitarContraseña()}"  update="msgCorreo msgUsuario msgDireccion  msgDni msgNom msglic msgUbigeo msgcar msgsue msgApe msgCelular msj " >
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </center>
+                        <div class="layout-menu-container" style="background-color: white">
+                            .
+                        </div>
+                        <p:blockUI block="form" widgetVar="bui">
+                            <h:panelGrid columns="1" id="block"  >
+                                <h>
+                                    <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+                                </h>
+                                <p:outputLabel value="Procesando..." style="color: white;font-weight: bold"/>
+                                <p:outputLabel value="Espere un momento" style="color: white;font-weight: bold"/>
+
+
+                            </h:panelGrid>
+                        </p:blockUI>
+                    </div>
+                </h:form>
+
+            </h:body>
+        </body>
+    </ui:define>
+
+</ui:composition>

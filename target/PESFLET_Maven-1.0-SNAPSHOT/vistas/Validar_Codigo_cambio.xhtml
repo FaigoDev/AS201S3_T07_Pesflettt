@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../PlantillaLoguin.xhtml">
+    <ui:define name="content">
+        <h:head>     
+            <h:outputStylesheet library="css" name="validacion.css" />
+            <link href="../resources/css/demo-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+
+        </h:head>
+
+        <event listener="#{usuarioC.limpiar()}" type="preRenderView" />
+
+        <p:growl id= "msj" showDetail="true" />
+        <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+        <h:body id="cuadro">
+            <!--            <div>
+                            <img src="resources/images/logoPesflet.png" alt=""/>
+                        </div>-->
+            <!--            <style>
+                            background-image url("../images/logoPesflet.png"); 
+                        </style>-->
+            <center>
+
+                <h:form >    
+
+
+                    <div class="div_tabla"  style="background-color: #949aa6;align-content: center;align-content: space-between;border-top-width: 10px;border-color: #000000" >  
+                        <p:panel  class="cuadro" id="loguin">
+                            <div class="layout-menu-container" style="background-color: black">
+                                .
+                            </div>
+                            <hr></hr>
+                            <center>
+                                <h:form id="Opciones">
+                                    <h1 style="color: #000000;font-weight: bold" >Pesflet</h1>
+                                    <h3 style="color: #000000" >Confirmación de Código</h3>
+                                </h:form>
+                                <h:panelGrid columns="1" class="layout-menu-container" style="align-content: flex-start"  >
+                                    <p:inputText id="TxtCodigo" value="#{usuarioC.usu.codigo}" maxlength="8"  required="true" requiredMessage="Ingrese código de verificación" style="width: 100%" >
+                                        <f:validateLength minimum="8" maximum="8"/>
+
+
+                                    </p:inputText>
+
+
+                                    <p:outputLabel for="TxtCodigo" value="Código de verificación" style="font-weight: bold;" />
+
+                                    <h:panelGrid columns="1"  >
+                                        <p:message id="msgCodigo" for="TxtCodigo"  showDetail="true" />
+                                    </h:panelGrid>
+                                </h:panelGrid> 
+                                <p:panel >
+                                    <p:commandButton id="ayuda" value="Confirmar"  update="msgCodigo msj"  actionListener="#{usuarioC.validarCodigoCambio()}" >
+                                    </p:commandButton>
+                                </p:panel>
+                            </center>  
+                            <hr></hr>
+                            <div class="layout-menu-container" style="background-color: black">
+                                .
+                            </div>
+
+                        </p:panel>
+                    </div>
+                </h:form>
+
+                <h:form id="dlgMensaje" >
+                    <p:dialog  style="margin: 150 auto; color: black;" width="650" height="90" widgetVar="wdlgMensaje" modal="true" 
+                               showEffect="clip" header="Cambio Exitoso" closable="false" >
+
+                        <center>
+                            <h4>Se ha enviado un correo con tu nueva contraseña, puedes cerrar esta pestaña</h4>
+                        </center>
+                    </p:dialog>
+                </h:form>
+
+            </center>
+        </h:body>
+    </ui:define>
+</ui:composition>

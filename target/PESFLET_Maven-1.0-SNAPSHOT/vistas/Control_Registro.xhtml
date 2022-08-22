@@ -1,0 +1,247 @@
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <event id="lista" listener="#{guiaC.listar()}" type="preRenderView" />
+        <event id="listaV" listener="#{guiaC.listarvia()}" type="preRenderView" />
+        <h:head>
+            <title>Registro de Guías</title>
+
+
+        </h:head>
+        <p:growl id= "mensaje" showDetail="true" />
+        <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+        <center>
+            <h:form id="Opciones">
+                <h1 style="color: #000000;font-weight: bold" > Registro de Guias</h1>
+                <hr></hr>
+            </h:form>
+        </center>
+
+        <h:body>
+            <style>
+                body {background-color: #ffffff;}
+            </style>
+            <h:form id="dlgControl" style="margin: auto" >
+                <h:panelGrid columns="3">
+                    <p:outputLabel value="Guía Transportista"  style="color: black; font-weight: bold"/>
+                    <p:inputMask value ="${guiaC.gui.CODGUITRA}" label="Guia Transportista"  required="true" id="TxtTransportista"
+                                 requiredMessage="Ingrese código de guía" maxlength="11" mask="9999-999999">
+                        <p:keyFilter regEx="/[0-9]/"  />
+                        <f:validateLength  minimum="11"  maximum="11" />
+                        <p:ajax  update="msgtransportista" delay="800" event="keyup" />
+                        <p:tooltip for="TxtTransportista" value="Ingresa el código Transportista" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:inputMask>
+                    <p:message id="msgtransportista" for="TxtTransportista"/>
+
+                    <p:outputLabel value="Guía Remitente" style="color: black; font-weight: bold" />
+                    <p:inputMask value ="${guiaC.gui.CODGUIREM}" label="Guia Remitente" required="true" id="TxtRemitente" 
+                                 requiredMessage="Ingrese código de guía" maxlength="11" mask="9999-999999">
+                        <p:keyFilter regEx="/[0-9]/" />
+                        <f:validateLength  minimum="11"  maximum="11" />
+                        <p:ajax  update="msgRemitente" delay="800" event="keyup" />
+                        <p:tooltip for="TxtRemitente" value="Ingresa el código Remitente" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:inputMask>
+                    <p:message id="msgRemitente" for="TxtRemitente"/>
+
+                    <p:outputLabel value="Facturador" style="color: black; font-weight: bold" />
+                    <p:autoComplete value="#{guiaC.gui.fac.RAZSOCFAC}" label="Facturador" id="TxtFacturador" completeMethod="#{guiaC.completeTextFacturador}"
+                                    inputStyle="width: 200%" minQueryLength="2" required="true">
+                        <p:keyFilter regEx="/[A-z,' ',.]/" />
+                        <p:ajax  update="msgFacturador" delay="800" event="keyup" />
+                        <p:tooltip for="TxtFacturador" value="Ingresa el facturador" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:autoComplete>
+                    <p:message id="msgFacturador" for="TxtFacturador"/>
+
+                    <p:outputLabel value="Planta Minera" style="color: black; font-weight: bold" />
+                    <p:autoComplete value="#{guiaC.gui.plan.NOMPLAMIN}" label="Planta Minera" id="TxtPlantaM" completeMethod="#{guiaC.completeTextPlanta}"
+                                    inputStyle="width: 200%" minQueryLength="2" required="true">
+                        <p:keyFilter regEx="/[A-z,' ',.]/" />
+                        <p:ajax  update="msgPlantaM" delay="800" event="keyup" />
+                        <p:tooltip for="TxtPlantaM" value="Ingresa la planta minera" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:autoComplete>
+                    <p:message id="msgPlantaM" for="TxtPlantaM"/>
+                </h:panelGrid>
+
+                <!--                    <p:ajax event="click" update="tablaVia" />-->
+                <p:dataTable id="tablaVia" var="tblvia" value="#{guiaC.listadovia}" widgetVar="filtro"
+                             filteredValue="#{guiaC.listadovia}"
+                             rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="5" selectionMode="single" selection="#{guiaC.via}" rowKey="#{tblvia.IDVIA}"
+                             emptyMessage="No se encontraron datos con los criterios dados" scrollable="true" scrollHeight="300" >
+                    <p:ajax event="rowSelect" update=" dlgControl:con dlgControl:veh dlgControl:des dlgControl:dir" />
+
+                    <f:facet  name="header">
+                        <div style="color: black; font-weight: bold; font-size: 20px">Selecciona el Viaje</div>
+                    </f:facet>
+
+                    <p:column width="23" headerText="Viaje" rendered="false">
+                        <h:outputText value="#{tblvia.IDVIA}" />
+                    </p:column>
+
+                    <p:column headerText="Fecha" filterBy="#{tblvia.FECVER}" filterMatchMode="range" width="100">
+                        <f:facet name="filter">
+                            <p:datePicker selectionMode="range" onchange="PF('filtro').filter()" pattern="dd-MM-yyyy" />
+                        </f:facet>
+                        <h:outputText value="#{tblvia.FECVER}" />
+                    </p:column>
+
+                    <p:column width="200" headerText="Conductor" filterBy="#{tblvia.IDCON}"  filterMaxLength="30">
+                        <h:outputText value="#{tblvia.IDCON}" />
+                    </p:column>
+
+                    <p:column width="120" headerText="Vehículo / Placa" filterBy="#{tblvia.IDVEH}"  filterMaxLength="30">
+                        <h:outputText value="#{tblvia.IDVEH}" />
+                    </p:column>
+
+                    <p:column headerText="Destino">
+                        <h:outputText value="#{tblvia.CODUBI}" />
+                    </p:column>
+
+                    <p:column headerText="Dirección">
+                        <h:outputText value="#{tblvia.DIRVIA}" />
+                    </p:column>
+                </p:dataTable>
+                <p/>  
+                <br/>
+
+                <!--                    <p:contextMenu for="tablaVia" >
+                
+                                        <p:menuitem>
+                                            <p:commandButton  id="botonS" value="Seleccionar" actionListener="#{tblvia}">
+                                                <p:ajax  update="seleccion" />
+                                            </p:commandButton>
+                                        </p:menuitem> 
+                
+                                    </p:contextMenu>-->
+                <!--                <center>
+                                <h3>
+                                    <p:outputLabel id="seleccion" value="#{guiaC.via.IDVIA}" /> Es el viaje seleccionado 
+                                </h3>
+                                </center>-->
+
+                <panelGrid columns="8">
+                    <p:outputLabel value="Conductor" style="color: #000000;font-weight: bold" />  
+                    <br></br>
+                    <p:outputLabel value="#{guiaC.via.IDCON}" id="con" />
+                    <br></br>
+                    <p:outputLabel value="Vehículo" style="color: #000000;font-weight: bold"/>
+                    <br></br>
+                    <p:outputLabel value="#{guiaC.via.IDVEH}"  id="veh"  />
+                    <br></br>
+                    <p:outputLabel value="Distrito"  style="color: #000000;font-weight: bold"/>
+                    <br></br>
+                    <p:outputLabel value="#{guiaC.via.CODUBI}" id="des" />
+                    <br></br>
+                    <p:outputLabel value="Dirección" style="color: #000000;font-weight: bold"/>
+                    <br></br>
+                    <p:outputLabel value="#{guiaC.via.DIRVIA}" id="dir"/>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                </panelGrid>
+
+
+                <panelGrid columns="3">
+                    <p:outputLabel value = "Fecha de Llenado" for="txtFecha" style="color: black; font-weight: bold"/>
+                    <p:calendar value ="${guiaC.gui.FECGUI}" required="true" label="Fechan de Llenado" id="txtFecha" maxlength="100"
+                                requiredMessage="Ingrese fecha de llenado" pattern="dd-MM-yyyy" mask="true" maxdate="@now">
+                        <p:ajax update="msgFecha" delay="800" event="keyup" />
+                        <p:tooltip for="txtFecha" value="Ingresa la Fecha" position="right" showEffect="clip" hideEffect="fold"/>
+                        <!--<f:convertDateTime  for="txtFecha" pattern="dd-MM-yyyy" type="date" />-->
+                    </p:calendar>
+                    <p:message id="msgFecha" for="txtFecha"  showDetail="true" />
+                    <br></br>
+                    <br></br>
+                    <br></br>
+
+                </panelGrid>
+                <center>
+                    <h2  style="color: #000000;font-weight: bold" > Detalle de la guía   
+                    </h2>
+                </center>
+                <h:panelGrid  columns="3" style="margin: 0 auto" id="detalle"  >
+                    <p:outputLabel for="TxtMineral" value="Mineral" style="color: black; font-weight: bold" />
+                    <p:autoComplete value="#{guiaC.guiD.min.NOMMIN}" completeMethod="#{guiaC.completeTextMineral}" id="TxtMineral" 
+                                    minQueryLength="2">
+                        <p:ajax  update="msgMineral" delay="800" event="keyup" />
+                        <p:tooltip for="TxtMineral" value="Ingresa el mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:autoComplete>
+                    <p:message id="msgMineral" for="TxtMineral" />
+
+                    <p:outputLabel for="TxtSacos" value="Cantida de Sacos" style="color: black; font-weight: bold" />
+                    <p:inputNumber  id="TxtSacos" value="#{guiaC.guiD.CANSAC}" minValue="0" >
+                        <p:ajax  update="msgSacos"  />
+                        <p:tooltip for="TxtSacos" value="Ingresa la cantidad de sacos" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:inputNumber>
+                    <p:message id="msgSacos" for="TxtSacos"/>
+
+
+
+                    <p:outputLabel for="TxtTMH" value="Toneladas" style="color: black; font-weight: bold" />
+                    <p:inputNumber  id="TxtTMH" value="#{guiaC.guiD.TMHDETCON}" minValue="0.0" >
+                        <p:ajax  update="msgTMH"/>
+                        <p:tooltip for="TxtTMH" value="Ingresa las toneladas" position="right" showEffect="clip" hideEffect="fold"/>
+                    </p:inputNumber>
+                    <p:message id="msgTMH" for="TxtTMH"/>
+
+                    <p:commandButton value="Agregar" actionListener="#{guiaC.agregarFila()}" update="tablaDetalle detalle mensaje dlgControl:totalcant"
+                                     icon="ui-icon-plus" />
+                    <p:commandButton value="Nuevo" actionListener="#{guiaC.nuevo()}" update="tablaDetalle detalle mensaje dlgControl:totalcant"
+                                     icon="ui-icon-plus" />
+                </h:panelGrid>
+
+                <br></br>
+                <p:dataTable var="tbldet" id="tablaDetalle" value="#{guiaC.listaGuiaDetalle}"
+                             rows="5">
+
+                    <p:column headerText="MINERAL" >
+                        <h:outputLabel value="#{tbldet.min.NOMMIN}" />
+                    </p:column>
+
+                    <p:column headerText="SACOS">
+                        <h:outputText value="#{tbldet.CANSAC}"/>
+                    </p:column>
+                    <p:column headerText="TONELADA">
+                        <h:outputText value="#{tbldet.TMHDETCON}">
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Eliminar">
+                        <p:commandButton style="margin: auto 0" value="X" actionListener="#{guiaC.eliminarfila(tbldet)}" update="tablaDetalle dlgControl:detalle mensaje dlgControl:totalcant" icon="ui-icon-plus" />
+                    </p:column>
+                </p:dataTable>
+
+                <p:panelGrid id="totalcant" columns="2" style="font-size: 10px; margin: 0 auto">
+                    TOTAL DE SACOS
+                    <p:outputLabel value="#{guiaC.gui.TOTCANSAC}"/>
+                    TOTAL DE TONELADAS
+                    <p:outputLabel value="#{guiaC.gui.TOTTMHCON}" />
+                </p:panelGrid>
+                <br></br>     
+                <center>
+                    <p:commandButton id="botguardar" action="Control_Guia" disabled="false" icon="pi pi-save" value="Registrar" 
+                                     update="msgFecha msgPlantaM msgFacturador msgRemitente msgtransportista mensaje">
+                        <f:actionListener binding="#{guiaC.registrar()}"/>
+                        <p:confirm type="popup" header="Confirmación" message="Estás seguro de Guardar?" icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </center>
+                <p:confirmPopup style="margin: initial" global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" async="true"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                </p:confirmPopup>   
+
+
+
+            </h:form>
+        </h:body>
+    </ui:define>
+
+</ui:composition>

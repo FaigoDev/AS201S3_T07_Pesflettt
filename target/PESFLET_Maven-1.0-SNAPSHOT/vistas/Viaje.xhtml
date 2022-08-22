@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <event id="Listar" listener="#{viajeC.listar()}" type="preRenderView" />
+        <h:body>
+            <h:head>
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+
+            <h:body>
+                <p:growl id= "mensaje" showDetail="true" />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+                <style>
+                    body {background-color: lightskyblue;}
+                </style>
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000;font-weight: bold " > Registro de Viajes</h1>
+                            <hr></hr>
+                            <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                                <p:commandButton icon="pi pi-user-plus" value="Registrar" oncomplete="PF('wdlgViaje').show();"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </center>                    
+                </div>
+                <h:form id="dlgViaje" >
+                    <p:dialog style="margin: 150 auto" width="950" height="300" widgetVar="wdlgViaje" id="dlgdatos" modal="true" 
+                              showEffect="clip" header="Registro del Viaje" resizable="false" minimizable="true" maximizable="true">
+                        <p:ajax event="close" listener="${viajeC.limpiar()}" update="dlgViaje"/>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value = "Conductor" style="color: #000000;font-weight: bold "/>
+                            <p:autoComplete value ="${viajeC.via.IDCON}" required="true" id="txtConductor" minQueryLength="1" inputStyle="width: 250"
+                                            requiredMessage="Ingrese Nombre del Conductor" maxlength="50" completeMethod="#{viajeC.completeTextConductor}">
+                                <p:keyFilter regEx="/[A-z,' ']/" />
+                                <f:validateLength  maximum="50" />
+                                <p:ajax update="msgConductor" delay="800" event="keyup" />
+                                <p:tooltip for="txtConductor" value="Ingresa el Nombre del conductor" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgConductor" for="txtConductor"     />
+
+                            <p:outputLabel value = "Vehículo" style="color: #000000;font-weight: bold "/>
+                            <p:autoComplete value ="${viajeC.via.IDVEH}" required="true" id="txtVehiculo" minQueryLength="1" inputStyle="width: 135%"
+                                            requiredMessage="Ingrese la marca del Vehículo" maxlength="50" completeMethod="#{viajeC.completeTextVehiculo}">
+                                <!--<p:keyFilter regEx="/[A-z,' ']/" />-->
+                                <f:validateLength  maximum="50" />
+                                <p:ajax update="msgVehiculo" delay="800" event="keyup" />
+                                <p:tooltip for="txtVehiculo" value="Ingresa la marca del vehiculo" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgVehiculo" for="txtVehiculo"     />
+
+                            <p:outputLabel value = "Distrito" style="color: #000000;font-weight: bold "/>
+                            <p:autoComplete value="#{viajeC.via.CODUBI }" id="txtUbigeo" completeMethod="#{viajeC.completeTextUbigeo}" 
+                                            inputStyle="width: 135%;" minQueryLength="2" required="true"  requiredMessage="Ingrese el destino del viaje">
+                                <p:ajax update="msgUbigeo" delay="800" event="keyup"  />
+                                <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:autoComplete>
+                            <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+
+                            <p:outputLabel value = "Dirección" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value ="${viajeC.via.DIRVIA}" required="true" id="txtDireccion" maxlength="70"  style="width: 110%"
+                                         requiredMessage="Ingrese la dirección del viaje" size="29" >
+                                <p:keyFilter regEx="/[A-z,' ',0-9]/"/> 
+                                <f:validateLength  maximum="100" />
+                                <p:ajax update="msgDireccion" delay="800" event="keyup" />
+                                <p:tooltip for="txtDireccion" value="Ingresa la Direccion" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+                            <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+
+
+                            <p:outputLabel style="color: #000000;font-weight: bold " value="Gastos"/>
+                            <p:inputNumber id="txtViaje" value="#{viajeC.via.GASVIA}"  required="true" 
+                                           requiredMessage="Ingrese el Gasto del viaje" symbol="S/" placeholder="S/0,00">
+                                <p:ajax update="msgGastos" delay="800" event="keyup" />
+                                <p:tooltip for="txtViaje" value="Ingresa la Direccion" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputNumber>
+                            <p:message id="msgGastos" for="txtViaje"  showDetail="true"/>
+
+                            <p:outputLabel value = "Fecha" style="color: #000000;font-weight: bold "/>
+                            <p:calendar value ="${viajeC.via.FECVIA}" required="true" id="txtFecha" maxlength="100"
+                                        requiredMessage="Ingrese fecha del viaje" pattern="dd-MM-yyyy" mask="true" >
+                                <p:ajax update="msgFecha" delay="800" event="mouseout" />
+                                <p:tooltip for="txtFecha" value="Ingresa la Fecha" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:calendar>
+                            <p:message id="msgFecha" for="txtFecha"  showDetail="true" />
+
+                        </h:panelGrid>
+                        <p:commandButton id="botguardar" action="${viajeC.limpiar()}" disabled="false" icon="pi pi-save" value="Registrar" 
+                                         update="form:tablaVia mensaje msgConductor msgVehiculo msgDireccion msgDireccion msgDireccion msgGastos">
+                            <f:actionListener binding="#{viajeC.registrar()}" />
+                            <p:confirm type="popup" header="Confirmación" message="Estás seguro de Guardar?" icon="pi pi-exclamation-triangle"/>
+                        </p:commandButton>
+                        <p:confirmDialog  global="true">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes"  update="dlgdatos" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                        </p:confirmDialog>  
+                    </p:dialog>
+                </h:form>
+
+                <!--<p:commandButton value="PDF" icon="pi pi-file-pdf" styleClass="p-mr-2 p-mb-2">
+                    <p:dataExporter type="pdf" target="form:tablaVia" fileName="Viajes_PDF" options="#{viajeC.pdfOpt}"/>
+                    </p:commandButton>-->
+
+                <div class="card" style="margin-left: 50px; margin-right: 50px">
+                    <div style="float: right">
+                        <h:form >
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel rendered="#{usuarioC.pase == '2'}" value="Reporte por:" style="color: black; font-weight: bold;text-align: right" />
+                                <h:panelGrid columns="3">
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Ver" icon="fa fa-fw fa-eye" ajax="false" action="${viajeC.reporteViaje()}"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Descargar" icon="fa fa-fw fa-download" ajax="false" action="${viajeC.descargarReporte()}" update="mensaje"
+                                                     onclick="this.form.target = '_blank'">
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Excel" icon="pi pi-file-excel" styleClass="p-mr-2 p-mb-2">
+                                        <p:dataExporter type="xls" target="form:tablaVia" fileName="Viajes_XLS" options="#{viajeC.excelOpt}"/>
+                                    </p:commandButton>
+                                </h:panelGrid>
+
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+
+                    <h:form id="form">
+
+                        <div >
+                            <h:panelGrid columns="3">
+                                <p:panelGrid columns="1" layout="grid">
+                                    <p:outputLabel value="Filtro Por:" style="color: black; font-weight: bold" />
+                                    <h:panelGrid columns="3">
+                                        <p:selectOneMenu value="#{viajeC.tipo}" style="align">
+                                            <f:selectItem itemValue="1" itemLabel="Activos" /> 
+                                            <f:selectItem itemValue="2" itemLabel="Inactivos"  />
+                                            <f:selectItem itemValue="3" itemLabel="Todos" />
+                                            <p:ajax listener="${viajeC.listar()}" update="tablaVia context"/>
+                                        </p:selectOneMenu> 
+                                    </h:panelGrid>
+                                </p:panelGrid>
+                            </h:panelGrid>
+                        </div>
+
+                        <p:dataTable id="tablaVia" var="tblvia" value="#{viajeC.listadovia}" widgetVar="filtro"
+                                     paginator="true" filteredValue="#{viajeC.listadovia}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                     rows="5" selectionMode="single" selection="#{viajeC.via}" rowKey="#{tblvia.IDVIA}"
+                                     emptyMessage="No se encontraron datos con los criterios dados" 
+                                     globalFilterFunction="#{viajeC.globalFilterFunction}">
+
+                            <p:ajax event="rowSelect" update="form:context mensaje"/>
+
+                            <f:facet name="header">
+                                <h3 style="color: black; font-weight: bold;text-align: center">LISTADO DE VIAJES</h3>
+                                <div class="p-d-flex p-jc-end">
+                                    <p:inputText id="globalFilter" onkeyup="PF('filtro').filter()" style="width:300px"
+                                                 placeholder="Buscar el todas la filas" />
+
+
+
+                                </div>
+                            </f:facet>
+
+                            <p:column rendered="false" width="23" headerText="ID">
+                                <h:outputText value="#{tblvia.IDVIA}" />
+                            </p:column>
+
+                            <p:column headerText="Conductor" filterable="false"  filterMaxLength="30">
+                                <h:outputText value="#{tblvia.IDCON}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                            <p:column headerText="Vehículo / Placa" filterable="false"  filterMaxLength="30">
+                                <h:outputText value="#{tblvia.IDVEH}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                            <p:column headerText="Distrito, Provincia, Departamento" filterable="false">
+                                <h:outputText value="#{tblvia.CODUBI}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                            <p:column headerText="Dirección" filterable="false">
+                                <h:outputText value="#{tblvia.DIRVIA}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                            <p:column headerText="Viático S/" filterable="false" width="85">
+                                <h:outputText value="#{tblvia.GASVIA}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha" filterable="false" filterMatchMode="range" id="fecha">
+                                <f:facet name="filter">
+                                    <p:datePicker selectionMode="range" onchange="PF('filtro').filter()" pattern="dd-MM-yyyy" />
+                                </f:facet>
+                                <h:outputText value="#{tblvia.FECVER}"  style="color:#{viajeC.estadoColor(tblvia)};"/>
+                                <!--<f:convertDateTime  for="fecha" pattern="dd-MMM-yyyy" type="date" />-->
+                            </p:column>
+
+                            <p:column headerText="Estado" filterable="false" rendered="false">
+                                <h:outputText value="#{tblvia.ESTVIA}" style="color:#{viajeC.estadoColor(tblvia)};"/>
+                            </p:column>
+
+                        </p:dataTable>                        
+                        <p:contextMenu for="tablaVia" id="context">
+                            <p:menuitem>
+                                <p:commandButton  value="Modificar" oncomplete="PF('wdlgViajeR').show();"
+                                                  update=":dlgViajeModificar"/>
+                            </p:menuitem>
+                            <p:menuitem id="bEliminar" rendered="#{viajeC.via.ESTVIA == 'A' || viajeC.tipo == 1}">
+                                <p:commandButton value="Eliminar" icon="ui_icon_trash" actionListener="#{viajeC.eliminar(viajeC.via)}" update= "tablaVia mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas eliminar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                                </p:confirmPopup>  
+
+                            </p:menuitem>
+
+                            <p:menuitem id="bRestaurar" rendered="#{viajeC.via.ESTVIA == 'I' || viajeC.tipo == 2}">
+                                <p:commandButton value="Restaurar" icon="ui_icon_trash" actionListener="#{viajeC.restaurar(viajeC.via)}" update= "tablaVia mensaje">
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas Restaurar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                                </p:confirmPopup>  
+
+                            </p:menuitem>
+                        </p:contextMenu>
+                    </h:form>
+                    <h:form id="dlgViajeModificar">
+                        <p:dialog  style="alignment-baseline: central" width="950" height="300" widgetVar="wdlgViajeR" id="dlgdatos" modal="true" 
+                                   showEffect="clip" header="Actualizacion del Viaje" resizable="false" minimizable="true" maximizable="true">
+                            <p:ajax event="close" listener="${viajeC.limpiar()}" update="dlgViaje"/>
+                            <h:panelGrid columns="3">
+                                <p:outputLabel value = "Conductor" style="color: #000000;font-weight: bold "/>
+                                <p:autoComplete value ="${viajeC.via.IDCON}" required="true" id="txtConductor" minQueryLength="1"
+                                                requiredMessage="Ingrese Nombre del Conductor" maxlength="50" completeMethod="#{viajeC.completeTextConductor(query)}">
+                                    <p:keyFilter regEx="/[A-z,' ']/" />
+                                    <f:validateLength  maximum="50" />
+                                    <p:ajax update="msgConductor" />
+                                    <p:tooltip for="txtConductor" value="Ingresa el Nombre del conductor" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:autoComplete>
+                                <p:message id="msgConductor" for="txtConductor"     />
+
+                                <p:outputLabel value = "Vehículo" style="color: #000000;font-weight: bold "/>
+                                <p:autoComplete value ="${viajeC.via.IDVEH}" required="true" id="txtVehiculo" minQueryLength="1"
+                                                requiredMessage="Ingrese la marca del Vehículo" maxlength="50" completeMethod="#{viajeC.completeTextVehiculo(viajeC.via.IDVEH)}">
+                                    <p:keyFilter regEx="/[A-z,' ']/" /><!--
+                                    -->                                <f:validateLength  maximum="50" />
+                                    <p:ajax update="msgVehiculo" />
+                                    <p:tooltip for="txtVehiculo" value="Ingresa la marca del vehiculo" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:autoComplete>
+                                <p:message id="msgVehiculo" for="txtVehiculo"     />
+
+                                <p:outputLabel value = "Destino" style="color: #000000;font-weight: bold "/>
+                                <p:autoComplete value="#{viajeC.via.CODUBI }" id="txtUbigeo" completeMethod="#{viajeC.completeTextUbigeo}"
+                                                inputStyle="width: 135%;" minQueryLength="2" required="true"  requiredMessage="Ingrese el destino del viaje">
+                                    <p:ajax update="msgUbigeo"/>
+                                    <p:tooltip for="txtUbigeo" value="Ingresa la ubicación (Distrito, Provincia, Departamento)" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:autoComplete>
+                                <p:message id="msgUbigeo" for="txtUbigeo"  showDetail="true" />
+
+
+                                <p:outputLabel value = "Dirección" style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${viajeC.via.DIRVIA}" required="true" id="txtDireccion" maxlength="70" requiredMessage="Ingrese la dirección del viaje">
+                                    <p:keyFilter regEx="/[A-z,' ',0-9]/"/> 
+                                    <f:validateLength  maximum="100" />
+                                    <p:ajax update="msgDireccion"/>
+                                    <p:tooltip for="txtDireccion" value="Ingresa la Direccion" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+                                <p:message id="msgDireccion" for="txtDireccion"  showDetail="true" />
+
+
+                                <p:outputLabel style="color: #000000;font-weight: bold " value="Gastos"/>
+                                <p:inputNumber id="txtViaje" value="#{viajeC.via.GASVIA}"  required="true" 
+                                               requiredMessage="Ingrese el Gasto del viaje" symbol="S/" placeholder="S/0,00">
+                                    <p:ajax update="msgGastos"/>
+                                    <p:tooltip for="txtViaje" value="Ingresa los Gastos" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputNumber>
+                                <p:message id="msgGastos" for="txtViaje"  showDetail="true"/>
+
+                                <p:outputLabel value = "Fecha" style="color: #000000;font-weight: bold "/>
+                                <p:calendar value ="${viajeC.via.FECVIA}" required="true" id="txtFecha" maxlength="100"
+                                            requiredMessage="Ingrese fecha del viaje" pattern="dd-MM-yyyy" mask="true" >
+                                    <p:ajax update="msgFecha" />
+                                    <p:tooltip for="txtFecha" value="Ingresa la Fecha" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:calendar>
+
+                                <p:message id="msgFecha" for="txtFecha"  showDetail="true" />
+
+                            </h:panelGrid>
+                            <p:commandButton    action="#{viajeC.modificar()}" disabled="false" icon="pi pi-save" value="Modificar" 
+                                                update=" mensaje form:tablaVia msgConductor msgVehiculo msgDireccion msgDireccion msgDireccion msgGastos">
+                                <p:confirm type="popup" header="Confirmación" message="Estás seguro de Modificar?" icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton>
+                            <p:confirmPopup global="true">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirm-popup-yes" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" />
+                            </p:confirmPopup>  
+                        </p:dialog>
+                    </h:form>
+                </div>
+
+            </h:body>
+
+
+        </h:body>
+
+    </ui:define>
+
+</ui:composition>

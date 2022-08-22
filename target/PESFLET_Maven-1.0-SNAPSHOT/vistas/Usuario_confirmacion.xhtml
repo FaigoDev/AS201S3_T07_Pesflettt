@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="../Plantilla.xhtml">
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <body>
+            <h:head>
+                <title>Usuarios</title>
+                <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+                <a href="Plantilla.xhtml"></a>
+            </h:head>
+            <p:growl id= "msj" showDetail="true" />
+            <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+            <h:body >
+
+                <style>
+                    body {background-color: lightskyblue;}
+                </style>
+
+
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000" >Confirmación</h1>
+                            <hr></hr>
+                        </h:form>
+                    </center>                    
+                </div>
+                <div class="card">
+                    <h5 class="p-mt-0" ALIGN="center"  style="font-weight: bold; color: black" >Atención</h5>
+                    <p class="p-m-0" >
+                    </p>
+
+
+
+                    <h:form id="con" >
+                        <h3>
+                            <p:outputLabel value="Hemos enviado la contraseña del Usuario al correo: " style="font-weight: bold" />
+                            <p:outputLabel value="#{usuarioC.correo}" style="color: blue" id="cor"/>
+                            <br/>
+                        </h3> 
+                        <p:panelGrid columns="3">
+                            <p:outputLabel value="Nombre Usuario" />
+                            <p:outputLabel id="nom" value="#{usuarioC.usuario}" />
+                            <p:outputLabel value="" />
+
+                            <p:outputLabel value="Contraseña" />
+                            <p:password   id="con1" match="con2"   value="#{usuarioC.usu.CONUSUCON}" validatorMessage="Contraseña diferente" required="true"  toggleMask="true" redisplay="true"  requiredMessage="Complete la contraseña" >
+                            </p:password >
+                            <p:message id="msgContra" for="con1"  showDetail="true" />
+
+                            <p:outputLabel value="Confirmar Contraseña"  />
+                            <p:password  id="con2" value="#{usuarioC.usu.CONUSUCON}"  label="Contraseña 2" required="true"  requiredMessage="Complete la contraseña" />
+                            <p:message id="msgContra2" for="con1"  showDetail="true" />
+                            <p:commandButton icon="pi pi-user-plus" value="Continuar"  action="#{usuarioC.confirmarContraseña()}" update="msj msgContra msgContra2"/>
+                        </p:panelGrid>
+
+
+                        <p:blockUI block="con" widgetVar="bui">
+                            <h:panelGrid columns="1" id="block"  >
+                                <h>
+                                    <i class="pi pi-spin pi-spinner" style="font-size: 3rem"></i>
+                                </h>
+                                <p:outputLabel value="Procesando..." style="color: white;font-weight: bold"/>
+                                <p:outputLabel value="Espere un momento" style="color: white;font-weight: bold"/>
+
+
+                            </h:panelGrid>
+                        </p:blockUI>
+
+                    </h:form>
+                </div> 
+            </h:body>
+        </body>
+    </ui:define>
+
+</ui:composition>

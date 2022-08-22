@@ -1,0 +1,16 @@
+body {
+    background-color: #eaff87;}
+
+td.centrarColumna{
+    text-align: center;
+    align-content: center;
+}
+
+.item{
+    margin: 1em;
+    float: left;
+}
+
+.container{
+    overflow: hidden;
+}

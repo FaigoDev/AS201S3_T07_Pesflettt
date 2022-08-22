@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Guia" pageWidth="841" pageHeight="595" orientation="Landscape" columnWidth="701" leftMargin="70" rightMargin="70" topMargin="70" bottomMargin="70" uuid="cd4db55e-5dbf-4794-9815-5cbe8b35f764">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+	<style name="column header" backcolor="#B5B5B5" hTextAlign="Center" vTextAlign="Middle" fontName="Times New Roman" fontSize="14" isBold="true">
+		<pen lineColor="#999999"/>
+	</style>
+	<subDataset name="Dataset1" uuid="5fd42f56-320c-4227-ba76-dc8c50e4ee91">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+		<parameter name="MES" class="java.lang.String"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT 
+        TO_CHAR (FECVIA, 'MONTH') AS FECHA,
+        CM.CODGUITRA AS CODGUITRA,
+		CM.CODGUIREM AS CODGUIREM,
+        F.RAZFAC AS RAZSOCFAC,
+        PM.NOMPLAMIN AS NOMPLAMIN,
+		CM.TOTTMHCON AS TOTTMHCON,
+		CM.TOTCANSAC AS TOTCANSAC,
+		CM.FECGUI AS FECGUI,
+		ROW_NUMBER() OVER (ORDER BY CM.IDCONGUI DESC) AS ORDEN
+    FROM 
+        CONTROL_GUIA CM, FACTURADOR F , PLANTA_MINERA PM,VIAJE V
+    WHERE 
+        CM.IDFAC = F.IDFAC AND CM.IDPLAMIN = PM.IDPLAMIN AND CM.IDVIA = V.IDVIA AND
+        EXTRACT(MONTH FROM FECGUI) = $P{MES}]]>
+		</queryString>
+		<field name="FECHA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="FECHA"/>
+			<property name="com.jaspersoft.studio.field.label" value="FECHA"/>
+		</field>
+		<field name="CODGUITRA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUITRA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUITRA"/>
+		</field>
+		<field name="CODGUIREM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUIREM"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUIREM"/>
+		</field>
+		<field name="RAZSOCFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+		</field>
+		<field name="NOMPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+		</field>
+		<field name="TOTTMHCON" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTTMHCON"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTTMHCON"/>
+		</field>
+		<field name="TOTCANSAC" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTCANSAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTCANSAC"/>
+		</field>
+		<field name="FECGUI" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="FECGUI"/>
+			<property name="com.jaspersoft.studio.field.label" value="FECGUI"/>
+		</field>
+	</subDataset>
+	<subDataset name="Dataset_table" uuid="2f8650ec-3945-4205-8aba-525360d09c02">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT 
+        TO_CHAR (FECVIA, 'MONTH') AS FECHA,
+        CM.CODGUITRA AS CODGUITRA,
+		CM.CODGUIREM AS CODGUIREM,
+        F.RAZFAC AS RAZSOCFAC,
+        PM.NOMPLAMIN AS NOMPLAMIN,
+		CM.TOTTMHCON AS TOTTMHCON,
+		CM.TOTCANSAC AS TOTCANSAC,
+		CM.FECGUI AS FECGUI,
+		ROW_NUMBER() OVER (ORDER BY CM.IDCONGUI DESC) AS ORDEN
+    FROM 
+        CONTROL_GUIA CM, FACTURADOR F , PLANTA_MINERA PM,VIAJE V
+    WHERE 
+        CM.IDFAC = F.IDFAC AND CM.IDPLAMIN = PM.IDPLAMIN AND CM.IDVIA = V.IDVIA]]>
+		</queryString>
+		<field name="CODGUITRA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUITRA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUITRA"/>
+		</field>
+		<field name="CODGUIREM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUIREM"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUIREM"/>
+		</field>
+		<field name="RAZSOCFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+		</field>
+		<field name="NOMPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+		</field>
+		<field name="TOTTMHCON" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTTMHCON"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTTMHCON"/>
+		</field>
+		<field name="TOTCANSAC" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTCANSAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTCANSAC"/>
+		</field>
+		<field name="FECGUI" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="FECGUI"/>
+			<property name="com.jaspersoft.studio.field.label" value="FECGUI"/>
+		</field>
+		<group name="CODGUITRA">
+			<groupExpression><![CDATA[$F{CODGUITRA}]]></groupExpression>
+		</group>
+		<group name="CODGUIREM">
+			<groupExpression><![CDATA[$F{CODGUIREM}]]></groupExpression>
+		</group>
+		<group name="RAZSOCFAC">
+			<groupExpression><![CDATA[$F{RAZSOCFAC}]]></groupExpression>
+		</group>
+		<group name="NOMPLAMIN">
+			<groupExpression><![CDATA[$F{NOMPLAMIN}]]></groupExpression>
+		</group>
+		<group name="TOTTMHCON">
+			<groupExpression><![CDATA[$F{TOTTMHCON}]]></groupExpression>
+		</group>
+		<group name="TOTCANSAC">
+			<groupExpression><![CDATA[$F{TOTCANSAC}]]></groupExpression>
+		</group>
+		<group name="FECGUI">
+			<groupExpression><![CDATA[$F{FECGUI}]]></groupExpression>
+		</group>
+	</subDataset>
+	<subDataset name="Dataset2" uuid="5e5f612e-7d2a-4590-9246-1a80dae5bb68">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="PESFLET_ORACLE"/>
+		<parameter name="MES" class="java.lang.Integer"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT 
+        TO_CHAR (FECVIA, 'MONTH') AS FECHA,
+        CM.CODGUITRA AS CODGUITRA,
+		CM.CODGUIREM AS CODGUIREM,
+        F.RAZFAC AS RAZSOCFAC,
+        PM.NOMPLAMIN AS NOMPLAMIN,
+		CM.TOTTMHCON AS TOTTMHCON,
+		CM.TOTCANSAC AS TOTCANSAC,
+		CM.FECGUI AS FECGUI,
+		ROW_NUMBER() OVER (ORDER BY CM.IDCONGUI DESC) AS ORDEN
+    FROM 
+        CONTROL_GUIA CM, FACTURADOR F , PLANTA_MINERA PM,VIAJE V
+    WHERE 
+        CM.IDFAC = F.IDFAC AND CM.IDPLAMIN = PM.IDPLAMIN AND CM.IDVIA = V.IDVIA AND
+        EXTRACT(MONTH FROM FECGUI) = $P{MES}]]>
+		</queryString>
+		<field name="CODGUITRA" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUITRA"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUITRA"/>
+		</field>
+		<field name="CODGUIREM" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="CODGUIREM"/>
+			<property name="com.jaspersoft.studio.field.label" value="CODGUIREM"/>
+		</field>
+		<field name="RAZSOCFAC" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+		</field>
+		<field name="NOMPLAMIN" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+			<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+		</field>
+		<field name="TOTTMHCON" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTTMHCON"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTTMHCON"/>
+		</field>
+		<field name="TOTCANSAC" class="java.math.BigDecimal">
+			<property name="com.jaspersoft.studio.field.name" value="TOTCANSAC"/>
+			<property name="com.jaspersoft.studio.field.label" value="TOTCANSAC"/>
+		</field>
+		<field name="FECGUI" class="java.sql.Timestamp">
+			<property name="com.jaspersoft.studio.field.name" value="FECGUI"/>
+			<property name="com.jaspersoft.studio.field.label" value="FECGUI"/>
+		</field>
+	</subDataset>
+	<parameter name="MES" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT 
+        TO_CHAR (FECVIA, 'MONTH') AS FECHA,
+        CM.CODGUITRA AS CODGUITRA,
+		CM.CODGUIREM AS CODGUIREM,
+        F.RAZFAC AS RAZSOCFAC,
+        PM.NOMPLAMIN AS NOMPLAMIN,
+		CM.TOTTMHCON AS TOTTMHCON,
+		CM.TOTCANSAC AS TOTCANSAC,
+		CM.FECGUI AS FECGUI,
+		ROW_NUMBER() OVER (ORDER BY CM.IDCONGUI DESC) AS ORDEN
+    FROM 
+        CONTROL_GUIA CM, FACTURADOR F , PLANTA_MINERA PM,VIAJE V
+    WHERE 
+        CM.IDFAC = F.IDFAC AND CM.IDPLAMIN = PM.IDPLAMIN AND CM.IDVIA = V.IDVIA AND
+        EXTRACT(MONTH FROM FECGUI) =  $P{MES}]]>
+	</queryString>
+	<field name="FECHA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="FECHA"/>
+		<property name="com.jaspersoft.studio.field.label" value="FECHA"/>
+	</field>
+	<field name="CODGUITRA" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODGUITRA"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODGUITRA"/>
+	</field>
+	<field name="CODGUIREM" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CODGUIREM"/>
+		<property name="com.jaspersoft.studio.field.label" value="CODGUIREM"/>
+	</field>
+	<field name="RAZSOCFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RAZSOCFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="RAZSOCFAC"/>
+	</field>
+	<field name="NOMPLAMIN" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMPLAMIN"/>
+		<property name="com.jaspersoft.studio.field.label" value="NOMPLAMIN"/>
+	</field>
+	<field name="TOTTMHCON" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TOTTMHCON"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTTMHCON"/>
+	</field>
+	<field name="TOTCANSAC" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TOTCANSAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTCANSAC"/>
+	</field>
+	<field name="FECGUI" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="FECGUI"/>
+		<property name="com.jaspersoft.studio.field.label" value="FECGUI"/>
+	</field>
+	<field name="ORDEN" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="ORDEN"/>
+		<property name="com.jaspersoft.studio.field.label" value="ORDEN"/>
+	</field>
+	<title>
+		<band height="157" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<line>
+				<reportElement x="0" y="74" width="701" height="1" uuid="ed5fb2d7-4687-410d-8fbc-13a164ec2327">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="119" width="40" height="20" forecolor="#000000" uuid="e191a5f5-153a-4663-b802-dabcb501ed6c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Mes:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="119" width="111" height="20" uuid="7111290e-d2a9-449e-bcee-42ad26bdbb86"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial Black" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="148" width="701" height="1" uuid="b703ba56-66b6-4e0e-9ba1-a51f877654ea">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="80" width="701" height="24" uuid="5444aa4f-765f-4148-876d-f3cda06a3702">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE GUIAS POR MES]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="110" width="701" height="1" uuid="4a6d4322-fb03-4065-b23f-d77f5f702c6d">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="567" y="50" width="50" height="20" uuid="b11ebd2a-dbd7-4268-bc77-4802c0fab11b"/>
+				<box rightPadding="4"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd MMM yyyy">
+				<reportElement x="617" y="50" width="84" height="20" uuid="3d4495d7-be1e-49bf-aaaf-bad713885b89"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="95" y="0" width="275" height="25" uuid="837a6919-8123-4b6a-9c0e-83bb13cc0451">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tranporte Hermanos Yllanes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="55" width="205" height="15" uuid="efb6064f-2841-49bb-a4e9-699ee0a47653"/>
+				<text><![CDATA[939056505, hmnosyllanes@gmail.com
+correo.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="25" width="215" height="15" uuid="c042b285-c4de-409d-984d-3cb658252409"/>
+				<text><![CDATA[Huaynacapac Nº18]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="40" width="205" height="15" uuid="9b40277e-cb46-4f09-8a25-17e73176c628"/>
+				<text><![CDATA[Vista Alegre, Nazca, Ica]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="15" width="85" height="45" uuid="bc27929d-b3d0-4151-b4cf-8a3978e5619d"/>
+				<imageExpression><![CDATA["C:/Users/Usuario/Documents/NetBeansProjects/PESFLET_Maven/src/main/webapp/resources/images/logoPesflet.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="202" y="0" width="138" height="30" uuid="0354cae6-a20f-411b-b629-4d4a812e0575"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FACTURADOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="607" y="0" width="94" height="30" uuid="38bbbe97-cd5b-465e-b06e-58d662ad8d3c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA LLENADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="557" y="0" width="50" height="30" uuid="537296b3-99b5-431d-a7f9-395be9b6d399"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SACOS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="0" width="130" height="30" uuid="7dc1d281-b6cb-4900-8e99-da15a9ebedaf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLANTA MINERA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="82" height="30" uuid="e7d546ff-16dc-4055-8625-8d2d44c5240d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO REMITENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="120" height="30" uuid="15e6f585-1bcb-488b-9e2e-a27eeb2a3b86"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CODIGO TRANSPORTISTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="87" height="30" uuid="86a8884e-31de-4936-87f4-19836c2e218e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TONELADAS]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="202" y="0" width="138" height="34" uuid="ada1ff49-71de-4d5e-9a19-1325e414379d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RAZSOCFAC}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="340" y="0" width="130" height="34" uuid="8f5a1800-2657-4235-b7e9-b2203972ccda"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{NOMPLAMIN}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MMM-yyyy">
+				<reportElement x="607" y="0" width="94" height="34" uuid="7917cdbe-72d3-4a73-9180-32118028d8f2"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECGUI}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="0" y="0" width="120" height="34" uuid="59c0e4fb-2027-4a7a-a516-9126cbffc448"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODGUITRA}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="120" y="0" width="82" height="34" uuid="92498f0a-a858-4509-bc8e-5ae3c77a803c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CODGUIREM}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="557" y="0" width="50" height="34" uuid="de14e41d-2fb2-4e96-b69b-cd4d87fcaf14"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTCANSAC}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="470" y="0" width="87" height="34" uuid="d615602b-8d3b-47ea-8183-26dab4da55a2"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="DejaVu Sans" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TOTTMHCON}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="662" y="0" width="29" height="20" uuid="0ad1512f-37c4-4907-b82e-c6a7d0a7395f"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Pag. ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="691" y="0" width="10" height="20" uuid="263ad5bc-0777-4962-995a-5022f45daed6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

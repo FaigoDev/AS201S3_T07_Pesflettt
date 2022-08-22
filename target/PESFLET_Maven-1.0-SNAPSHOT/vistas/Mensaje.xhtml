@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml">
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <h:head>     
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <p:growl id="msj" showDetail="true" skipDetailIfEqualsSummary="true"/>
+        <h:body>
+            <p:separator/>
+            <h2 style="font-weight: bold; color: black" ALIGN="center" >Envio de Mensaje</h2>
+            <p:separator/>
+            <h:form id="form" >
+                <center>
+                    <div class="padre">
+                        <div >
+                            <h5 class="p-mt-0" ALIGN="center"  style="font-weight: bold; color: black" ></h5>
+                            <panelGrid columns="3"  >
+                                <div>
+                                    <p:outputLabel style="font-weight: bold; color: black" value = "Celular" for="txtCelular"/>
+                                </div>
+                                <div>
+                                    <p:inputText value ="${usuarioC.usu.CELPER}" label="Número" id="txtCelular" maxlength="9" required="true"
+                                                 requiredMessage="Ingrese Nº de Celular" >
+                                        <p:keyFilter regEx="/[0-9]/"/> 
+                                        <f:validator validatorId="vFactura" />
+                                        <p:ajax update="msgCelular" delay="800" event="keyup" />
+                                        <p:tooltip for="txtCelular" value="Ingresa el Celular (Opcional)" position="right" showEffect="clip" hideEffect="fold"/>
+                                    </p:inputText>
+                                </div>
+                                <p:message id="msgCelular" for="txtCelular"  showDetail="true" />
+                                <div>
+                                    <p:outputLabel style="font-weight: bold; color: black" value = "Cuerpo" for="txtCuerpo"/>
+                                </div>
+                                <div>
+                                    <p:inputTextarea value ="${usuarioC.usu.CUERPO}" label="Cuerpo"  required="true" id="txtCuerpo" maxlength="100"  >
+                                        <p:keyFilter regEx="/[A-z,' ',Ñ-ñ,0-9]/" /> 
+                                        <p:ajax  update="msgCuerpo" delay="800" event="keyup" />
+                                    </p:inputTextarea> 
+                                </div>
+                                <p:message id="msgCuerpo" for="txtCuerpo"  showDetail="true" />
+                            </panelGrid>
+                            <p:separator/>
+                            <p:commandButton icon="pi pi-user-plus" value="Enviar"  actionListener="#{usuarioC.enviarMensaje()}" update="txtCuerpo txtCelular msgCuerpo msgCelular msj"/>
+                        </div>
+
+                    </div>
+
+
+                </center>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>

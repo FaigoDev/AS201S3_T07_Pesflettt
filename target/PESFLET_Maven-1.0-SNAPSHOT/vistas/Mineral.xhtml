@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../Plantilla.xhtml">
+
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <event id="Actualizar" listener="#{mineralC.listar()}" type="preRenderView" />
+        <body>
+            <h:head>
+                <title>Minerales</title>
+                <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+                <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+                <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+            </h:head>
+            <p:growl id="mensajes" severity="info,fatal" showSummary="true" showDetail="true"/>
+            <h:body>
+                <style>
+                    body {background-color: #eaff87;}
+                </style>
+                <p:growl id= "mensaje" showDetail="true" />
+                <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+
+                <div>
+                    <center>
+                        <h:form id="Opciones">
+                            <h1 style="color: #000000;font-weight: bold " > Registro de Minerales</h1>
+                            <hr></hr>
+                            <p:panelGrid columns="1" layout="grid" style="align-content: center">
+                                <p:commandButton icon="pi pi-user-plus" value="Registrar" oncomplete="PF('wdlgMineral').show();"/>
+                            </p:panelGrid>
+                        </h:form>
+                    </center>                    
+                </div>
+
+                <h:form id="dlgMineral" >
+                    <p:dialog  style="margin: 150 auto" width="650" height="200" widgetVar="wdlgMineral" id="dlgdatos" modal="true" 
+                               showEffect="clip" header="Registro del Mineral" resizable="false" minimizable="true" maximizable="true" >
+                        <p:ajax event="close" listener="${mineralC.limpiar()}" update="dlgMineral"/>
+
+                        <h:panelGrid columns="3" >
+                            <p:outputLabel value = "Mineral" style="color: #000000;font-weight: bold " />
+                            <p:inputText value = "${mineralC.min.NOMMIN}" required="true" id="txtMineral" requiredMessage="Ingrese el Mineral" maxlength="70" > 
+                                <p:keyFilter regEx="/[A-z,'ñ-Ñ']/" />
+                                <p:ajax update="msgMineral" delay="800" event="keyup" />
+                                <p:tooltip for="txtMineral" value="Ingresa el Nombre del Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+
+                            <p:message id="msgMineral" for="txtMineral" />
+
+                            <p:outputLabel value = "Tipo de Mineral" style="color: #000000;font-weight: bold "/>
+                            <p:inputText value ="${mineralC.min.TIPMIN}" required="true" id="txtTipo" requiredMessage="Ingrese el Tipo" maxlength="100">
+                                <p:keyFilter regEx="/[A-z,'.,',' ']/" />
+                                <f:validateLength  minimum="3" maximum="100" />
+                                <p:ajax update="msgTipo" delay="800" event="keyup" />
+                                <p:tooltip for="txtTipo" value="Ingresa el Tipo de Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:inputText>
+
+                            <p:message id="msgTipo" for="txtTipo"  />
+
+                            <p:outputLabel value ="Situacion" for="txtSituacion" style="color: #000000;font-weight: bold "/>
+                            <p:selectOneMenu value="#{mineralC.min.SITMIN}" id="txtSituacion" >
+                                <f:selectItem itemValue="NADA" itemLabel="Selecciona la situacion" />
+                                <f:selectItem itemValue="Seco" itemLabel="Seco" />
+                                <f:selectItem itemValue="Mojado" itemLabel="Mojado" />
+                                <f:selectItem itemValue="Húmedo" itemLabel="Húmedo  " />
+                                <p:ajax update="msgSituacion" delay="800" event="keyup" />
+                                <p:tooltip for="txtSituacion" value="Elige la situacion del Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                            </p:selectOneMenu>
+                            <p:message id="msgSituacion" for="txtSituacion" />
+                        </h:panelGrid>
+                        <p:commandButton id="botguardar" action="${mineralC.limpiar()}" disabled="false" icon="pi pi-save" value="Registrar" 
+                                         update="form:tablaMin mensaje msgTipo msgMineral">
+                            <f:actionListener binding="#{mineralC.registrar()}" />
+                            <p:confirm  type="popup" header="Confirmación" message="Estás seguro de Guardar?" icon="pi pi-exclamation-triangle" />       
+                        </p:commandButton>
+                        <p:confirmPopup global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" async="true"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no" />
+                        </p:confirmPopup>  
+                    </p:dialog>
+                </h:form>
+
+                <div class="card" style="margin-left: 50px; margin-right: 50px">
+                    <div style="float: right">
+                        <h:form >
+                            <p:panelGrid columns="1" layout="grid">
+                                <p:outputLabel rendered="#{usuarioC.pase == '2'}" value="Reporte por:" style="color: black; font-weight: bold;text-align: right" />
+                                <h:panelGrid columns="3">
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="PDF" icon="pi pi-file-pdf" styleClass="p-mr-2 p-mb-2">
+                                        <p:dataExporter type="pdf" target="form:tablaMin" fileName="Minerales_PDF" options="#{mineralC.pdfOpt}"/>
+                                    </p:commandButton>
+                                    <p:commandButton rendered="#{usuarioC.pase == '2'}" value="Excel" icon="pi pi-file-excel" styleClass="p-mr-2 p-mb-2">
+                                        <p:dataExporter type="xls" target="form:tablaMin" fileName="Minerales_XLS" options="#{mineralC.excelOpt}" />
+                                    </p:commandButton>
+                                </h:panelGrid>
+                            </p:panelGrid>
+                        </h:form>
+                    </div>
+
+                    <h:form id="form">
+
+                        <div >
+                            <h:panelGrid columns="3">
+                                <p:panelGrid columns="1" layout="grid">
+                                    <p:outputLabel value="Filtro Por:" style="color: black; font-weight: bold" />
+                                    <h:panelGrid columns="3">
+                                        <p:selectOneMenu value="#{mineralC.tipo}" style="alig" >
+                                            <f:selectItem itemValue="1" itemLabel="Activos" /> 
+                                            <f:selectItem itemValue="2" itemLabel="Inactivos"  />
+                                            <f:selectItem itemValue="3" itemLabel="Todos" />
+                                            <p:ajax listener="${mineralC.listar()}" update="tablaMin context"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                </p:panelGrid>
+                            </h:panelGrid>
+                        </div>
+
+                        <p:dataTable id="tablaMin" var="tblmin" value="#{mineralC.listadomin}" widgetVar="filtro"  
+                                     paginator="true" filteredValue="#{mineralC.listadomin}"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="{startRecord}-{endRecord} of {totalRecords} records"
+                                     rowsPerPageTemplate="5,10,{ShowAll|'All'}"
+                                     rows="5" selectionMode="single" selection="#{mineralC.min}" rowKey="#{tblmin.IDMIN}"
+                                     emptyMessage="No se encontraron datos con los criterios dados"
+                                     globalFilterFunction="#{mineralC.globalFilterFunction}">
+
+                            <p:ajax event="rowSelect" update="form:context" />
+                            <f:facet name="header">
+                                <h3 style="color: black; font-weight: bold;text-align: center">LISTADO DE MINERALES</h3>
+                                <div class="p-d-flex p-jc-end">
+                                    <p:inputText id="globalFilter" onkeyup="PF('filtro').filter()" style="width:300px"
+                                                 placeholder="Buscar en todas la filas" />
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="ID" rendered="false">
+                                <h:outputText value="#{tblmin.IDMIN}" />
+                            </p:column>
+
+                            <p:column headerText="Mineral" filterable="false" filterMaxLength="70" >
+                                <h:outputText value="#{tblmin.NOMMIN}" style="color:#{mineralC.estadoColor(tblmin)};" />
+                            </p:column>
+
+                            <p:column headerText="Tipo">
+                                <h:outputText value="#{tblmin.TIPMIN}" style="color:#{mineralC.estadoColor(tblmin)}" />
+                            </p:column>
+
+                            <p:column headerText="Situación" filterable="false" filterMaxLength="6" >
+                                <h:outputText value="#{tblmin.SITMIN}" style="color:#{mineralC.estadoColor(tblmin)};" />
+                            </p:column>
+
+                            <p:column headerText="Estado" rendered="false" exportable="false" >
+                                <h:outputText value="#{tblmin.ESTMIN}" style="color:#{mineralC.estadoColor(tblmin)};" />
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:contextMenu for="tablaMin" id="context">
+                            <p:menuitem>
+                                <p:commandButton value="Modificar" oncomplete="PF('wdlgMineralM').show();"
+                                                 update=":dlgMineralMod">
+                                </p:commandButton>
+
+                            </p:menuitem>
+
+                            <p:menuitem id="bEliminar" rendered="#{mineralC.min.ESTMIN == 'A' || mineralC.tipo == 1 }"> 
+                                <p:commandButton value="Eliminar" icon="ui_icon_trash" actionListener="#{mineralC.eliminar(mineralC.min)}" update= "tablaMin mensaje" >
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas eliminar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup> 
+
+                            </p:menuitem>
+                            <p:menuitem id="bRestaurar" rendered="#{mineralC.min.ESTMIN == 'I' || mineralC.tipo == 2 }"> 
+                                <p:commandButton value="Restaurar" icon="ui_icon_trash" actionListener="#{mineralC.restaurar(mineralC.min)}" update= "tablaMin mensaje" >
+                                    <p:confirm type="popup" header="Confirmación" message="¿Deseas Restaurar?" icon="ui_icon_trash"/>
+                                </p:commandButton>
+                                <p:confirmPopup global="true">
+                                    <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                                </p:confirmPopup> 
+
+                            </p:menuitem>
+                        </p:contextMenu>
+                    </h:form>
+                    <!--                        Formulario de Modificar-->
+                    <h:form id="dlgMineralMod">
+                        <p:dialog  style="margin: 150 auto" width="650" height="200" widgetVar="wdlgMineralM" id="dlgdatos" modal="true" showEffect="clip" header="Actualizacion del Mineral" resizable="false">
+                            <p:ajax event="close"  update="dlgMineralMod"/>
+                            <h:panelGrid columns="3" >
+                                <p:outputLabel value = "Mineral" style="color: #000000;font-weight: bold " />
+                                <p:inputText value = "${mineralC.min.NOMMIN}" required="true" id="txtMineral" requiredMessage="Ingrese el Mineral" maxlength="70" > 
+                                    <p:keyFilter regEx="/[A-z,'ñ-Ñ']/" />
+                                    <p:ajax update="msgMineral" />
+                                    <p:tooltip for="txtMineral" value="Ingresa el Nombre del Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+
+                                <p:message id="msgMineral" for="txtMineral" />
+
+                                <p:outputLabel value = "Tipo de Mineral"  style="color: #000000;font-weight: bold "/>
+                                <p:inputText value ="${mineralC.min.TIPMIN}" required="true" id="txtTipo" requiredMessage="Ingrese el Tipo" maxlength="100">
+                                    <p:keyFilter regEx="/[A-z,'.,',' ']/" />
+                                    <f:validateLength  minimum="3" maximum="100" />
+                                    <p:ajax update="msgTipo" />
+                                    <p:tooltip for="txtTipo" value="Ingresa el Tipo de Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:inputText>
+
+                                <p:message id="msgTipo" for="txtTipo" />
+
+                                <p:outputLabel value ="Situacion" for="txtSituacion" style="color: #000000;font-weight: bold "/>
+                                <p:selectOneMenu value="#{mineralC.min.SITMIN}" id="txtSituacion" >
+                                    <f:selectItem itemValue="NADA" itemLabel="Selecciona la situacion" />
+                                    <f:selectItem itemValue="Seco" itemLabel="Seco" />
+                                    <f:selectItem itemValue="Mojado" itemLabel="Mojado" />
+                                    <f:selectItem itemValue="Húmedo" itemLabel="Húmedo" />
+                                    <p:ajax update="msgSituacion" />
+                                    <p:tooltip for="txtSituacion" value="Elige la situacion del Mineral" position="right" showEffect="clip" hideEffect="fold"/>
+                                </p:selectOneMenu>
+
+                                <p:message id="msgSituacion" for="txtSituacion" />
+
+                            </h:panelGrid>
+                            <p:commandButton value="Modificar"  actionListener="${mineralC.modificar()}" update=" mensaje form:tablaMin" >
+                                <p:confirm type="popup" header="Confirmación" message="Estás seguro de Modificar?" icon="pi pi-exclamation-triangle"/>
+                            </p:commandButton> 
+                            <p:confirmPopup global="true">
+                                <p:commandButton value="Si" type="button" styleClass="ui-confirm-popup-yes" icon="pi pi-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirm-popup-no ui-button-flat" icon="pi pi-times" />
+                            </p:confirmPopup> 
+                        </p:dialog>
+                    </h:form>
+                </div>
+            </h:body>
+        </body>
+    </ui:define>
+</ui:composition>

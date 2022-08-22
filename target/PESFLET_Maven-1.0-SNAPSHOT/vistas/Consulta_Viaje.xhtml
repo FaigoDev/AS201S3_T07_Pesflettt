@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="../Plantilla.xhtml">
+
+    <ui:define name="content">
+        <f:event listener="#{usuarioC.seguridadSesion()}" type="preRenderView" />
+        <f:event listener="#{usuarioC.seguridadNivel()}" type="preRenderView" />
+        <h:head>
+            <title>Consultas</title>
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+        </h:head>
+
+        <p:growl id="mensajes" severity="info,fatal" showSummary="true" showDetail="true"/>
+        
+
+
+        <h:body>
+
+            <div>
+                <center>
+                    <h:form id="Opciones">
+                        <h1 style="color: #000000;font-weight: bold " > Consulta de Viajes </h1>
+                    </h:form>
+                </center>                    
+            </div>
+            <div class="card" style="margin-left: 50px; margin-right: 50px">
+                <h:form id="form">
+
+
+
+                    <div>
+                        <h5 style="color: black;font-weight: bold">Reporte por</h5>
+
+                        <div class="card">
+                            <p:tabMenu activeIndex="#{param.i}">
+                                <p:menuitem value="Conductor y Mes" outcome="/vistas/Consulta_Viaje" icon="pi pi-fw pi-home">
+                                    <f:param name="i" value="0"/>
+                                </p:menuitem>
+                                <p:menuitem value="Planta Minera" outcome="/vistas/Consulta_Viaje_2" icon="pi pi-fw pi-calendar">
+                                    <f:param name="i" value="1"/>
+                                </p:menuitem>
+                                <p:menuitem value="Vehículo" outcome="/vistas/Consulta_Viaje_3" icon="pi pi-fw pi-pencil">
+                                    <f:param name="i" value="2"/>
+                                </p:menuitem>
+                            </p:tabMenu>
+                        </div>
+
+                        <div style="color: black;font-weight: bold">
+
+
+                            <p:fragment>
+                                <p:panelGrid columns="4" layout="flex">
+
+                                    <p:panelGrid columns="2" >
+                                        <p:outputLabel for="txtConductor" value="Nombre del Conductor" style="color: black;font-weight: bold" />
+                                        <p:outputLabel for="seleccionMes" value="Mes" style="color: black;font-weight: bold" />
+
+                                        <p:autoComplete value ="${viajeC.via.IDCON}" required="true" id="txtConductor" minQueryLength="1"
+                                                        requiredMessage="Ingrese Nombre del Conductor" maxlength="50" completeMethod="#{viajeC.completeTextConductor}">
+                                            <p:keyFilter regEx="/[A-z,' ']/" />
+                                            <f:validateLength  maximum="50" />
+                                        </p:autoComplete>
+                                        <p:selectOneMenu id="seleccionMes" value="#{viajeC.mes}">
+                                            <f:selectItem itemValue="1" itemLabel="ENERO"/>
+                                            <f:selectItem itemValue="2" itemLabel="FEBRERO"/>
+                                            <f:selectItem itemValue="3" itemLabel="MARZO"/>
+                                            <f:selectItem itemValue="4" itemLabel="ABRIL"/>
+                                            <f:selectItem itemValue="5" itemLabel="MAYO"/>
+                                            <f:selectItem itemValue="6" itemLabel="JUNIO"/>
+                                            <f:selectItem itemValue="7" itemLabel="JULIO"/>
+                                            <f:selectItem itemValue="8" itemLabel="AGOSTO"/>
+                                            <f:selectItem itemValue="9" itemLabel="SEPTIEMBRE"/>
+                                            <f:selectItem itemValue="10" itemLabel="OCTUBRE"/>
+                                            <f:selectItem itemValue="11" itemLabel="NOVIEMBRE"/>
+                                            <f:selectItem itemValue="12" itemLabel="DICIEMBRE"/>
+                                        </p:selectOneMenu>
+                                        
+                                        <p:message id="msgConductor" for="txtConductor"  showDetail="true" />
+                                    </p:panelGrid>
+
+                                    <p:panelGrid columns="2" >
+                                        <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto"
+                                                         onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-eye"
+                                                         value="Visualizar Reporte"  actionListener="${viajeC.reporteMesYConductor()}" update="txtConductor seleccionMes msgConductor"/>
+
+                                        <p:commandButton style="margin-bottom: 20px;alignment-adjust: auto"
+                                                         onclick="this.form.target = '_blank'" ajax="false" icon="pi pi-download" 
+                                                         value="Descargar Reporte"  actionListener="${viajeC.descargarReporteMesYConductor()}" update="txtConductor seleccionMes msgConductor"/>
+                                    </p:panelGrid>
+                                </p:panelGrid>
+                            </p:fragment>
+                        </div> 
+                    </div>
+                </h:form> 
+            </div>
+        </h:body>
+    </ui:define>
+
+</ui:composition>

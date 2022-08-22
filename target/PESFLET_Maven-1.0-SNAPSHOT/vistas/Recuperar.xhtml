@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="../PlantillaLoguin.xhtml">
+    <ui:define name="content">
+        <h:head>     
+            <h:outputStylesheet library="css" name="validacion.css" />
+            <link href="../resources/css/layout-light.css" rel="stylesheet" type="text/css"/>
+            <link href="../resources/css/main.css" rel="stylesheet" type="text/css"/>
+
+        </h:head>
+        <p:growl id= "msj" showDetail="true" />
+        <p:growl id="growl-sticky" for="sticky-key" showDetail="true" sticky="true" />
+        <h:body>
+            <h:form>
+                <center>
+                    <div class="padre">  
+                        <br></br>
+                        <br></br>
+                        <br></br>
+                        <div   style="background-color: #86cfda;height: 90vh;"  >  
+                            <center>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <br></br>
+                                <h:form id="Opciones">
+                                    <h1 style="color: #000000;font-weight: bold" >Pesflet</h1>
+                                    <h3 style="color: #000000" >Recuperación de contraseña</h3>
+                                </h:form>
+                                <h:panelGrid columns="1" class="layout-menu-container" style="align-content: flex-start"  >
+                                    <p:inputText placeholder="Correo Electronico" id="nom" value="#{usuarioC.usu.CORPER}"  required="true" requiredMessage="Ingresa tu Correo electronico" style="width: 100%" >
+                                        <f:validator validatorId="vCorreo" />
+                                    </p:inputText>
+                                </h:panelGrid> 
+                                <h:panelGrid columns="1" >
+                                    <p:message for="nom" showDetail="true" id="msgUsuario"  />
+                                </h:panelGrid>
+                                <p:commandButton id="perdida" value="Solicitar Cambio" action="#{usuarioC.recuperarContrasena()}"  update="msj msgUsuario" >                                                    
+                                </p:commandButton>
+                                <br></br>
+                                <br></br>
+                                <a  href="../vistas/Loguin.xhtml"  class="px-2 py-2 ml-md-1 rounded" style="color: red"><span style="color: red"></span>Cancelar</a>
+                            </center>
+                        </div>
+                    </div>
+                    <p:dialog  id="dlgMensaje" style="margin: 150 auto" width="650" height="90" widgetVar="wdlgMensaje" modal="true" 
+                               showEffect="clip" header="Solicitud enviada" closable="false" >
+
+                        <center>
+                            <h4>Utilice el codigo que le acabamos de enviar para confirmar su identidad, puede cerrar esta pestaña</h4>
+                        </center>
+                    </p:dialog>
+                </center>  
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>

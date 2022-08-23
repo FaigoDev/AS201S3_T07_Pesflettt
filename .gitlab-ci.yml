@@ -27,8 +27,8 @@ sonarqube-check:
 #      -  echo $SERVICEACCOUNTPESFLET | base64 -d > ./credentials.json
 #      -  terraform init
 
-# stages:
-#       - sonarqube-check
+stages:
+      - sonarqube-check
 #       - validate
 #       - plan
 #       - apply

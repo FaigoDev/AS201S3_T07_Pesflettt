@@ -12,7 +12,7 @@ before_script:
      -  terraform init
 
 stages:
-      # - sonarqube-check
+      - sonarqube-check
       - validate
       - plan
       - apply

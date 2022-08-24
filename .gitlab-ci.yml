@@ -35,8 +35,8 @@ stages:
 
 validate:
    stage: validate
-   dependencies:
-     - sonarqube-check
+  #  dependencies:
+  #    - sonarqube-check
    script:
      - terraform validate
 

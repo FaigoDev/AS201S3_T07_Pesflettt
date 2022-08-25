@@ -9,7 +9,7 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-    - mvn sonar:sonar -Dsonar.host.url=http://35.208.15.34:9000 -Dsonarlogin=dd70f0ad8930ab11b597db0aed773be4403617e2
+    - mvn sonar:sonar -Dsonar.host.url="$SONAR_HOST_URL" -Dsonarlogin="$SONAR_LOGIN" 
   allow_failure: true
   only:
     - dev

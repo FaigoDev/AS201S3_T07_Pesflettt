@@ -12,10 +12,19 @@ before_script:
      -  terraform init
 
 stages:
-      - sonarqube-check
       - validate
+      - sonarqube-check
       - plan
       - apply
+
+
+
+validate:
+   stage: validate
+   dependencies:
+     - sonarqube-check
+   script:
+     - terraform validate
 
 sonarqube-check:
   stage: sonarqube-check
@@ -32,13 +41,6 @@ sonarqube-check:
   allow_failure: true
   only:
     - dev
-
-validate:
-   stage: validate
-   dependencies:
-     - sonarqube-check
-   script:
-     - terraform validate
 
 plan:
    stage: plan

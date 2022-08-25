@@ -21,8 +21,6 @@ stages:
 
 validate:
    stage: validate
-   dependencies:
-     - sonarqube-check
    script:
      - terraform validate
 
@@ -41,6 +39,8 @@ sonarqube-check:
   allow_failure: true
   only:
     - dev
+  dependencies:
+    - validate
 
 plan:
    stage: plan

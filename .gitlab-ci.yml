@@ -1,3 +1,22 @@
+image:
+   name: hashicorp/terraform:light
+   entrypoint:
+     - '/usr/bin/env'
+     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+before_script:
+     -  rm -rf .terraform
+     -  terraform --version
+     -  mkdir -p ./creds
+     -  echo $SERVICEACCOUNTPESFLET | base64 -d > ./credentials.json
+     -  terraform init
+
+stages:
+      - sonarqube-check
+      - validate
+      - plan
+      - apply
+
 sonarqube-check:
   stage: sonarqube-check
   image: maven:3.6.3-jdk-8-openj9 
@@ -14,46 +33,27 @@ sonarqube-check:
   only:
     - dev
 
-# image:
-#    name: hashicorp/terraform:light
-#    entrypoint:
-#      - '/usr/bin/env'
-#      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+validate:
+   stage: validate
+   dependencies:
+     - sonarqube-check
+   script:
+     - terraform validate
 
-# before_script:
-#      -  rm -rf .terraform
-#      -  terraform --version
-#      -  mkdir -p ./creds
-#      -  echo $SERVICEACCOUNTPESFLET | base64 -d > ./credentials.json
-    #  -  terraform init
+plan:
+   stage: plan
+   script:
+     - terraform plan -out "planfile"
+   dependencies:
+     - validate
+   artifacts:
+     paths:
+       - planfile
 
-stages:
-      - sonarqube-check
-#       - validate
-#       - plan
-#       - apply
-
-# validate:
-#    stage: validate
-#   #  dependencies:
-#   #    - sonarqube-check
-#    script:
-#      - terraform validate
-
-# plan:
-#    stage: plan
-#    script:
-#      - terraform plan -out "planfile"
-#    dependencies:
-#      - validate
-#    artifacts:
-#      paths:
-#        - planfile
-
-# apply:
-#    stage: apply
-#    script:
-#      - terraform apply -input=false "planfile"
-#    dependencies:
-#      - plan
-#    when: manual
+apply:
+   stage: apply
+   script:
+     - terraform apply -input=false "planfile"
+   dependencies:
+     - plan
+   when: manual

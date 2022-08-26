@@ -19,7 +19,7 @@ stages:
 
 
 sonarqube-check:
-  stage: .pre
+  stage: pre
   image: maven:3.6.3-jdk-8-openj9 
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
@@ -39,7 +39,7 @@ validate:
     script:
       - terraform validate
     dependencies:
-      - .pre
+      - pre
 
 
 plan:

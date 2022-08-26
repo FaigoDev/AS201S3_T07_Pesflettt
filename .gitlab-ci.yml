@@ -4,6 +4,7 @@ image:
      - '/usr/bin/env'
      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
 
+
 before_script:
      -  rm -rf .terraform
      -  terraform --version
@@ -12,14 +13,14 @@ before_script:
      -  terraform init
 
 stages:
-      - .pre
+      - sonar-test
       - validate
       - plan
       - apply
 
 
-.pre:
-  stage: pre
+sonar-test:
+  stage: sonar-test
   image: maven:3.6.3-jdk-8-openj9 
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
@@ -39,7 +40,7 @@ validate:
     script:
       - terraform validate
     dependencies:
-      - pre
+      - sonar-test
 
 
 plan:

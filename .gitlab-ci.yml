@@ -63,6 +63,7 @@ plan:
      paths:
        - planfile
 
+
 apply:
    stage: apply
    script:

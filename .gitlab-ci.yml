@@ -51,7 +51,11 @@ validate:
 plan:
    stage: plan
    script:
+     -  rm -rf .terraform
+     -  terraform --version
+     -  mkdir -p ./creds
      -  echo $SERVICEACCOUNTPESFLET | base64 -d > ./credentials.json
+     -  terraform init
      - terraform plan -out "planfile"
    dependencies:
      - validate
@@ -62,8 +66,12 @@ plan:
 apply:
    stage: apply
    script:
+     -  rm -rf .terraform
+     -  terraform --version
+     -  mkdir -p ./creds
      -  echo $SERVICEACCOUNTPESFLET | base64 -d > ./credentials.json
-     - terraform apply -input=false "planfile"
+     -  terraform init
+     -  terraform apply -input=false "planfile"
    dependencies:
      - plan
    when: manual

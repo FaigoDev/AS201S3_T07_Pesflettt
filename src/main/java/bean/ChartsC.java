@@ -58,7 +58,6 @@ public class ChartsC implements Serializable {
 
     public void createBarModel() throws Exception {
         try {
-//        if(inicioChartBar == 0){
             listaFacturadores = dao.datosChartBar();
             dao = new ConsultasList();
             barModel = new BarChartModel();
@@ -68,7 +67,7 @@ public class ChartsC implements Serializable {
             barDataSet.setLabel("Facturadores");
             barDataSet.setBackgroundColor("black");
 
-            //Cargando datos
+
             List<String> labels = new ArrayList<>();
             List<Number> valores = new ArrayList<>();
 
@@ -80,7 +79,6 @@ public class ChartsC implements Serializable {
             data.setLabels(labels);
             barDataSet.setData(valores);
 
-            //Definiendo colores para las barras
             List<String> bgColor = new ArrayList<>();
             bgColor.add("rgba(255, 99, 132, 0.2)");
             bgColor.add("rgba(255, 159, 64, 0.2)");
